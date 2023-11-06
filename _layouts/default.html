@@ -1,0 +1,19 @@
+<html>
+  {% include head.html %}
+
+  <body>
+    {% include header.html %}
+
+    <div id="map">
+      <div class="container text-center text-muted display-1">
+        Some big map.
+      </div>
+    </div>
+
+    <div class="container mt-4">
+      {{ content }}
+    </div>
+
+    {% include footer.html %}
+  </body>
+</html>

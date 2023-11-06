@@ -1,0 +1,9 @@
+{
+  "name": "obisnew",
+  "version": "1.0.0",
+  "scripts": {
+    "serve": "bundle exec jekyll serve"
+  },
+  "author": "",
+  "license": "ISC"
+}
