@@ -2,4 +2,4 @@
 title: OBIS export
 ---
 
-This is an example data product.
+This is another example data product.
