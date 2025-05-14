@@ -1,12 +1,49 @@
+:root {
+    --light-grey: #f6f6f6;
+}
+
 #map {
     padding: 100px;
-    background-color: #f1f1f1;
+    background-color: var(--light-grey);
 }
 
 h2 {
     margin-bottom: 1em;
 }
 
+.card {
+    border-radius: 10px;
+}
+
+.card-dark {
+    background-color: var(--light-grey);
+    border: 0px;
+}
+
+.card-dark .card-img-top {
+    background-color: var(--light-grey);
+}
+
+.card-light {
+    background-color: #ffffff;
+    border: 0px;
+}
+
+.card-dark .badge {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: normal;
+}
+
 section {
-    margin-top: 3em;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.section-dark {
+    background-color: var(--light-grey);
+}
+
+.card-title a {
+    color: #000000;
 }
