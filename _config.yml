@@ -5,13 +5,14 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 plugins:
   - jekyll-feed
-  - jekyll-seo-tag
+
 exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
   - node_modules
   - vendor
+
 collections:
   data_products:
     output: true
