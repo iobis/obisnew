@@ -15,35 +15,54 @@ h2 {
     border-radius: 10px;
 }
 
-.card-dark {
+.card-img-top, .card-img-top img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.section-light .card {
     background-color: var(--light-grey);
     border: 0px;
 }
 
-.card-dark .card-img-top {
+.section-light .card-img-top {
     background-color: var(--light-grey);
 }
 
-.card-light {
+.section-dark .card {
     background-color: #ffffff;
     border: 0px;
 }
 
-.card-dark .badge {
-    background-color: #ffffff;
-    color: #000000;
+.section-light .card .badge {
+    background-color: #B1B695;
+    color: #ffffff;
     font-weight: normal;
 }
 
 section {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
 }
 
 .section-dark {
     background-color: var(--light-grey);
 }
 
+.section-light {
+    background-color: #ffffff;
+}
+
 .card-title a {
     color: #000000;
+}
+
+.tagline {
+    font-size: 1.3rem;
+    margin-top: 1.2rem;
+    margin-bottom: 1.7rem;
+}
+
+.tag {
+    font-size: 0.9rem;
 }

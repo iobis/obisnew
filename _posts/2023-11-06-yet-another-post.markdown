@@ -3,6 +3,7 @@ layout: post
 title:  "Yet another post"
 date:   2023-11-06 19:27:47 +0100
 categories: jekyll update
+image: 2.jpg
 tags:
   secretariat
   testing

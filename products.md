@@ -4,10 +4,10 @@ title: Data products
 permalink: /products/
 ---
 
-# Data products
+<div class="section-light">
 
-Example products page.
+<h1>Data products</h1>
 
-{% for data_product in site.data_products %}
-<h4><a href="{{ data_product.website }}">{{ data_product.title }}</a></h4>
-{% endfor %}
+{% include product_cards.html %}
+
+</div>
