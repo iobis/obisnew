@@ -4,20 +4,22 @@ layout: default
 
 <section class="section-light">
   <div class="container">
-
     <h2>News</h2>
 
     <p class="tagline">Get the latest on all things OBIS</p>
 
-    {% include post_cards.html %}
+    {% assign filtered_posts = site.posts %}
+    {% include post_cards.html filtered_posts=filtered_posts %}
   </div>
 
 </section>
 
 <section class="section-dark">
   <div class="container">
-    <h2>Data products</h2>
-    {% include product_cards.html %}
+    <h2>Use cases</h2>
+
+    {% assign filtered_usecases = site.usecases %}
+    {% include usecase_cards.html %}
   </div>
 </section>
 

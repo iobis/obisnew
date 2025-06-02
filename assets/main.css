@@ -34,7 +34,7 @@ h2 {
     border: 0px;
 }
 
-.section-light .card .badge {
+.section-light .card .badge, .section-dark .card .badge {
     background-color: #B1B695;
     color: #ffffff;
     font-weight: normal;

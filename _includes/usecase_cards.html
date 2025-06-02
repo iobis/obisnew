@@ -1,5 +1,5 @@
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for post in filtered_posts %}
+    {% for post in filtered_usecases %}
     <div class="col">
       <div class="card">
         <div src="#" style="height: 200px;" class="card-img-top">
@@ -10,7 +10,7 @@
           <p class="card-text">{{ post.intro }}</p>
           <p>
             {% for tag in post.tags %}
-                <a href="/tag/{{ tag }}"><span class="badge tag">{{ tag }}</span></a>
+                <a href="/tag/{{ tag | slugify }}"><span class="badge tag">{{ tag }}</span></a>
             {% endfor %}
           </p>
         </div>

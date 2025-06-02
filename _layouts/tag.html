@@ -2,8 +2,26 @@
 layout: page
 ---
 
-<h1>Posts tagged with "{{ page.tag }}"</h1>
+{% assign filtered_posts = site.posts %}
+{% if page.tag %}
+  {% assign filtered_posts = site.posts | where_exp: "post", "post.tags contains page.tag" %}
+{% endif %}
 
+{% assign filtered_usecases = site.usecases %}
+{% if page.tag %}
+  {% assign filtered_usecases = site.usecases | where_exp: "post", "post.tags contains page.tag" %}
+{% endif %}
+
+{% if filtered_posts and filtered_posts.size != 0 %}
 <div class="section-light">
-{% include post_cards.html tag=page.tag %}
+<h2>Posts tagged with "{{ page.tag }}"</h2>
+{% include post_cards.html tag=page.tag filtered_posts=filtered_posts %}
 </div>
+{% endif %}
+
+{% if filtered_usecases and filtered_usecases.size != 0 %}
+<div class="section-light mt-5">
+<h2>Use cases tagged with "{{ page.tag }}"</h2>
+{% include usecase_cards.html tag=page.tag filtered_usecases=filtered_usecases %}
+</div>
+{% endif %}
