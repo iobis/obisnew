@@ -4,8 +4,12 @@
   <body>
     {% include header.html %}
 
-    <div class="container mt-5">
+    <div class="container container-post mt-5">
         <p>News</p>
+        <h1>{{ page.title }}</h1>
+        {% if page.intro %}
+        <p class="intro">{{ page.intro }}</p>
+        {% endif %}
         {{ content }}
     </div>
 
