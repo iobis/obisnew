@@ -1,5 +1,10 @@
 :root {
     --light-grey: #f6f6f6;
+    --highlight: #B1B695;
+}
+
+a {
+    color: #000000;
 }
 
 #map {
@@ -35,7 +40,7 @@ h2 {
 }
 
 .section-light .card .badge, .section-dark .card .badge {
-    background-color: #B1B695;
+    background-color: var(--highlight);
     color: #ffffff;
     font-weight: normal;
 }
@@ -75,4 +80,13 @@ section {
 
 .container-post {
     max-width: 700px;
+}
+
+.contacts {
+    list-style: none;
+    padding-left: 0;
+}
+
+.contacts a {
+    color: var(--highlight)
 }
