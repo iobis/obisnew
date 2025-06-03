@@ -5,6 +5,11 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 plugins:
   - jekyll-feed
+  - jekyll-get-json
+
+jekyll_get_json:
+  - data: nodes
+    json: "https://api.obis.org/node"
 
 exclude:
   - README.md
@@ -26,6 +31,8 @@ menu:
     url: "/"
   - title: "About"
     url: "/about/"
+  - title: "Contact"
+    url: "/contact/"
   - title: "Resources"
     subitems:
     - title: "Data Products"
