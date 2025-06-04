@@ -1,1 +1,91 @@
-<h2>{{ dataset.title }}</h2>
+<script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+
+<p>Dataset</p>
+
+<h1>{{ dataset.title }}</h1>
+
+<p>{{ dataset.nodes | map(attribute='name') | join(', ') }}</p>
+
+<p>{{ dataset.abstract }}</p>
+
+<p>{{ dataset.citation }}</p>
+
+<div class="row">
+  {% for contact in dataset.contacts %}
+    <div class="col-md-4">
+    <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
+    <br/>{{ contact.organization }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+<div id="sunburst" style="height: 700px;"></div>
+
+<script>
+
+async function fetchAndConvertToSunburst(datasetid) {
+  const url = `https://api.obis.org/statistics/taxonomy?datasetid=${datasetid}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+    const taxonomyTree = await response.json();
+    const { labels, parents, values } = flattenForSunburst(taxonomyTree);
+    const plotlyData = [{
+      type: "sunburst",
+      labels,
+      parents,
+      values,
+      leaf: { opacity: 0.4 },
+      marker: {
+        line: { width: 2 },
+        colors: values,
+        colorscale: "PuRd"
+      }
+    }];
+    return plotlyData;
+  } catch (error) {
+    console.error("Failed to fetch or convert taxonomy data:", error.message);
+  }
+}
+
+function flattenForSunburst(node, parent = "") {
+  const labels = [];
+  const parents = [];
+  const values = [];
+
+  function recurse(currentNode, currentParent) {
+    let { name, value, children } = currentNode;
+
+    if (typeof value !== "number" && Array.isArray(children)) {
+      value = children.reduce((sum, child) => {
+        return sum + (typeof child.value === "number" ? child.value : 0);
+      }, 0);
+    }
+
+    labels.push(name);
+    parents.push(currentParent);
+    values.push(value);
+
+    if (children && children.length > 0) {
+      for (const child of children) {
+        recurse(child, name);
+      }
+    }
+  }
+
+  recurse(node, parent);
+  return { labels, parents, values };
+}
+
+fetchAndConvertToSunburst("{{ dataset.id }}").then((data) => {
+  var layout = {
+    margin: {l: 0, r: 0, b: 30, t: 30},
+    // height: 700
+  };
+  Plotly.newPlot("sunburst", data, layout);
+});
+
+</script>
