@@ -100,3 +100,31 @@ section {
 .progress-bar {
     background-color: var(--highlight);
 }
+
+.map-container {
+    position: relative;
+}
+
+.map-legend {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 10px;
+  font: 12px sans-serif;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+.map-legend div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.map-legend span {
+  display: inline-block;
+  width: 20px;
+  height: 12px;
+  margin-right: 6px;
+}
