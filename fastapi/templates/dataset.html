@@ -42,21 +42,23 @@
       {% endfor %}
     </div>
 
-    <div class="map-container">
-      <div id="map" style="height: 500px;" class="my-5"></div>
-
-      <div id="legend" class="map-legend">
-        <p>Records</p>
-        <div><span style="background:#2c7bb6"></span>1</div>
-        <div><span style="background:#abd9e9"></span>10</div>
-        <div><span style="background:#ffffbf"></span>100</div>
-        <div><span style="background:#fdae61"></span>1,000</div>
-        <div><span style="background:#d7191c"></span>&gt;10,000</div>
+    <div class="row gx-5">
+      <div class="col">
+        <div class="map-container">
+          <div id="map" style="height: 500px;" class="my-5"></div>
+          <div id="legend" class="map-legend">
+            <p>Records</p>
+            <div><span style="background:#2c7bb6"></span>1</div>
+            <div><span style="background:#abd9e9"></span>10</div>
+            <div><span style="background:#ffffbf"></span>100</div>
+            <div><span style="background:#fdae61"></span>1,000</div>
+            <div><span style="background:#d7191c"></span>&gt;10,000</div>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div id="sunburst" style="height: 600px;"></div>
-
+      <div class="col">
+        <div id="sunburst" style="height: 600px;"></div></div>
+      </div>
   </div>
   
   <div class="tab-pane" id="quality" role="tabpanel" aria-labelledby="quality-tab">
@@ -192,7 +194,7 @@ mapboxgl.accessToken = "pk.eyJ1IjoiaW9kZXBvIiwiYSI6ImNrd2txMXRyaTFpNjkybm1sZWxwe
 const map = new mapboxgl.Map({
     container: "map",
     center: [0, 25],
-    zoom: 0.4,
+    zoom: 0,
     style: "mapbox://styles/iodepo/cmbicrg1b00cb01sm0r4vgwfr",
     // style: "mapbox://styles/mapbox/light-v11",
     projection: "mercator",
@@ -231,7 +233,7 @@ map.on("load", function() {
 
   map.addControl(new mapboxgl.ScaleControl({
     maxWidth: 100,
-    unit: 'metric'
+    unit: "metric"
   }));
 
   map.scrollZoom.disable();
