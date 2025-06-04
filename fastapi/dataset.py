@@ -56,5 +56,8 @@ async def dataset_page(request: Request, dataset_id: str):
     return shell_templates.TemplateResponse(
         request=request,
         name="portal.html",
-        context={"content": dataset_block}
+        context={
+            "title": dataset["title"],
+            "content": dataset_block
+        }
     )
