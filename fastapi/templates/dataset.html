@@ -1,4 +1,6 @@
 <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
 
 <p>Dataset</p>
 
@@ -40,9 +42,23 @@
       {% endfor %}
     </div>
 
-    <div id="sunburst" style="height: 700px;"></div>
-  </div>
+    <div class="map-container">
+      <div id="map" style="height: 500px;" class="my-5"></div>
 
+      <div id="legend" class="map-legend">
+        <p>Records</p>
+        <div><span style="background:#2c7bb6"></span>1</div>
+        <div><span style="background:#abd9e9"></span>10</div>
+        <div><span style="background:#ffffbf"></span>100</div>
+        <div><span style="background:#fdae61"></span>1,000</div>
+        <div><span style="background:#d7191c"></span>&gt;10,000</div>
+      </div>
+    </div>
+
+    <div id="sunburst" style="height: 600px;"></div>
+
+  </div>
+  
   <div class="tab-pane" id="quality" role="tabpanel" aria-labelledby="quality-tab">
 
     <h3>Missing and invalid fields</h3>
@@ -171,4 +187,52 @@ fetchAndConvertToSunburst("{{ dataset.id }}").then((data) => {
   Plotly.newPlot("sunburst", data, layout);
 });
 
+mapboxgl.accessToken = "pk.eyJ1IjoiaW9kZXBvIiwiYSI6ImNrd2txMXRyaTFpNjkybm1sZWxwemtrbWsifQ.KtiKSQsLSwvnDtfg9T9qdA";
+
+const map = new mapboxgl.Map({
+    container: "map",
+    center: [0, 25],
+    zoom: 0.4,
+    style: "mapbox://styles/mapbox/light-v11",
+    projection: "mercator",
+    attributionControl: false
+});
+
+map.on("load", function() {
+
+  map.addSource("obis-occurrence", {
+    type: "vector",
+    tiles: [
+      "https://api.obis.org/occurrence/tile/{x}/{y}/{z}.mvt?datasetid={{ dataset.id }}"
+    ],
+    scheme: "xyz"
+  });
+
+  map.addLayer({
+    id: "obis-occurrence-layer",
+    type: "fill",
+    source: "obis-occurrence",
+    "source-layer": "grid",
+    paint: {
+      "fill-color": [
+        "interpolate",
+        ["linear"],
+        ["get", "doc_count"],
+        0, "#2c7bb6",
+        10, "#abd9e9",
+        100, "#ffffbf",
+        1000, "#fdae61",
+        10000, "#d7191c"
+      ],
+      "fill-opacity": 0.6
+    }
+  });
+
+  map.addControl(new mapboxgl.ScaleControl({
+    maxWidth: 100,
+    unit: 'metric'
+  }));
+
+  map.scrollZoom.disable();
+});
 </script>
