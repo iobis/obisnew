@@ -1,0 +1,7 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+COPY fastapi/ /app
+RUN pip install fastapi uvicorn jinja2 requests
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
