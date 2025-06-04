@@ -3,7 +3,7 @@
     --highlight: #B1B695;
 }
 
-a {
+a, .nav-link, .nav-link:hover {
     color: #000000;
 }
 
@@ -39,7 +39,13 @@ h2 {
     border: 0px;
 }
 
-.section-light .card .badge, .section-dark .card .badge {
+.card .badge {
+    background-color: var(--highlight);
+    color: #ffffff;
+    font-weight: normal;
+}
+
+.badge {
     background-color: var(--highlight);
     color: #ffffff;
     font-weight: normal;
@@ -89,4 +95,8 @@ section {
 
 .contacts a {
     color: var(--highlight)
+}
+
+.progress-bar {
+    background-color: var(--highlight);
 }
