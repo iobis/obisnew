@@ -60,12 +60,14 @@
         {% for field, stats in quality_statistics.fields.items() %}
         <tr>
           <td>{{ field }}</td>
-          <td>{{ stats.missing }}</td>
-          <td>{{ stats.invalid }}</td>
+          <td>{{ "{:0,.0f}".format(stats.missing) if stats.missing else "" }}</td>
+          <td>{{ "{:0,.0f}".format(stats.invalid) if stats.invalid else "" }}</td>
           <td>
-            <div class="progress" style="width: 200px;">
-              <div class="progress-bar" role="progressbar" style="width: {{ stats.total / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+            <div style="display: flex; align-items: center; gap: 0.5em;">
+              <div class="progress" style="width: 200px;">
+                <div class="progress-bar" role="progressbar" style="width: {{ stats.total / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
+              <span>{{ (stats.total / dataset.statistics.Occurrence * 100)|round(1) }}%</span>
             </div>
           </td>
         </tr>
@@ -86,11 +88,13 @@
         {% for flag, records in quality_statistics.flags.items() %}
         <tr>
           <td>{{ flag }}</td>
-          <td>{{ records }}</td>
+          <td>{{ "{:0,.0f}".format(records) if records else "" }}</td>
           <td>
-            <div class="progress" style="width: 200px;">
-              <div class="progress-bar" role="progressbar" style="width: {{ records / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+            <div style="display: flex; align-items: center; gap: 0.5em;">
+              <div class="progress" style="width: 200px;">
+                <div class="progress-bar" role="progressbar" style="width: {{ records / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
+              <span>{{ (records / dataset.statistics.Occurrence * 100)|round(1) }}%</span>
             </div>
           </td>
         </tr>
