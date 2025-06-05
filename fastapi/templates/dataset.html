@@ -65,6 +65,7 @@
 
     <h3>Missing and invalid fields</h3>
 
+    {% if quality_statistics.fields %}
     <table class="table">
       <thead>
         <tr>
@@ -92,8 +93,13 @@
         {% endfor %}
       </tbody>
     </table>
+    {% else %}
+    <p>No missing or invalid fields.</p>
+    {% endif %}
 
     <h3>Quality flags</h3>
+
+    {% if quality_statistics.flags %}
     <table class="table">
       <thead>
         <tr>
@@ -119,6 +125,9 @@
         {% endfor %}
       </tbody>
     </table>
+    {% else %}
+    <p>No quality flags.</p>
+    {% endif %}
 
   </div>
 </div>
@@ -195,15 +204,15 @@ const map = new mapboxgl.Map({
     container: "map",
     center: [0, 25],
     zoom: 0,
-    style: "mapbox://styles/iodepo/cmbicrg1b00cb01sm0r4vgwfr",
-    // style: "mapbox://styles/mapbox/light-v11",
+    // style: "mapbox://styles/iodepo/cmbicrg1b00cb01sm0r4vgwfr",
+    style: "mapbox://styles/mapbox/light-v11",
     projection: "mercator",
     attributionControl: false
 });
 
 map.on("load", function() {
 
-  map.addSource("obis-occurrence", {
+  map.addSource("occurrence", {
     type: "vector",
     tiles: [
       "https://api.obis.org/occurrence/tile/{x}/{y}/{z}.mvt?datasetid={{ dataset.id }}"
@@ -214,7 +223,7 @@ map.on("load", function() {
   map.addLayer({
     id: "obis-occurrence-layer",
     type: "fill",
-    source: "obis-occurrence",
+    source: "occurrence",
     "source-layer": "grid",
     paint: {
       "fill-color": [
@@ -227,7 +236,25 @@ map.on("load", function() {
         1000, "#fdae61",
         10000, "#d7191c"
       ],
-      "fill-opacity": 0.6
+      "fill-opacity": 0.8
+    }
+  });
+
+  map.addLayer({
+    id: "numbers-layer",
+    type: "symbol",
+    source: "occurrence",
+    "source-layer": "grid",
+    layout: {
+      "text-field": ["to-string", ["get", "doc_count"]],
+      "text-size": 10,
+      "text-anchor": "center"
+    },
+    paint: {
+      "text-color": "#000000",
+      "text-halo-color": "rgba(255, 255, 255, 1)",
+      "text-halo-width": 1,
+      "text-halo-blur": 0
     }
   });
 
@@ -236,6 +263,6 @@ map.on("load", function() {
     unit: "metric"
   }));
 
-  map.scrollZoom.disable();
+  // map.scrollZoom.disable();
 });
 </script>

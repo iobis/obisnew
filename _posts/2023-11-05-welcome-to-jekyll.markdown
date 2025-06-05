@@ -6,6 +6,7 @@ categories: jekyll update
 image: 1.jpg
 tags:
   biodiversity
+  macroalgae
 intro: Some quick example text to build on the card title and make up the bulk of the card’s content.
 ---
 
