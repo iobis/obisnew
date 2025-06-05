@@ -6,6 +6,8 @@
 
 <h1>{{ node.name }}</h1>
 
+<p>{{ node.description }}</p>
+
 <div class="row">
     {% for contact in node.contacts %}
     <div class="col-md-4">
@@ -19,7 +21,10 @@
 
 {% for dataset in datasets %}
 <div>
-<p><a href="/dataset/{{ dataset.id }}">{{ dataset.title }}</a></p>
-
+<p>
+    <a href="/dataset/{{ dataset.id }}">{{ dataset.title }}</a>
+    <br/>
+    <b>{{ "{:0,.0f}".format(dataset.statistics.Occurrence) }}</b> occurrences | <b>{{ "{:0,.0f}".format(dataset.statistics.MeasurementOrFact) }}</b> measurements and facts
+</p>
 </div>
 {% endfor %}
