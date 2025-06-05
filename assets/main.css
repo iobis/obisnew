@@ -26,6 +26,11 @@ section {
     padding-bottom: 3rem;
 }
 
+.section-superdense {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
 .section-dark {
     background-color: var(--light-grey);
 }
@@ -132,4 +137,8 @@ section {
   width: 20px;
   height: 12px;
   margin-right: 6px;
+}
+
+.nodename {
+    color: var(--highlight);
 }

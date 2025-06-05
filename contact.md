@@ -8,23 +8,25 @@ permalink: /contact/
 
 <h1>Contact</h1>
 
-{% assign nodes = site.data.nodes.results %}
-  {% for node in nodes %}
-    <h4>{{ node.name }}</h4>
+{% assign nodes = site.data.nodes.results | sort: "name" | sort: "name", "OBIS Secretariat" %}
+{% for node in nodes %}
+  <section class="section-superdense">
+    <h4 class="nodename">{{ node.name }}</h4>
     <p>
     {% for u in node.url %}
         <a href="{{ u }}" target="_blank">{{ u }}</a>
     {% endfor %}
     </p>
 
-    <ul class="contacts">
-    {% for contact in node.contacts %}
-        <li>
-            {{ contact.givenname }} {{ contact.surname }}
-            <a class="ms-2" href="mailto:{{ contact.email }}"><i class="bi bi-envelope-fill"></i></a>
-        </li>
-    {% endfor %}
-    </ul>
-  {% endfor %}
+    <div class="row">
+        {% for contact in node.contacts %}
+        <div class="col-md-3">
+            <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
+            <br/>{{ contact.email }}</p>
+        </div>
+        {% endfor %}
+    </div>
+  </section>
+{% endfor %}
 
 </div>
