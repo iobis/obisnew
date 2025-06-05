@@ -8,7 +8,7 @@
 
 <p>
   {% for node in dataset.nodes %}
-  <span class="badge tag">{{ node.name }}</span>
+  <a href="/node/{{ node.id }}"><span class="badge tag">{{ node.name }}</span></a>
   {% endfor %}
 </p>
 
@@ -149,12 +149,12 @@ async function fetchAndConvertToSunburst(datasetid) {
       labels,
       parents,
       values,
-      leaf: { opacity: 0.4 },
-      marker: {
-        line: { width: 2 },
-        colors: values,
-        colorscale: "PuRd"
-      }
+      leaf: { opacity: 1 },
+      // marker: {
+      //   line: { width: 2 },
+      //   colors: values,
+      //   colorscale: "PuRd"
+      // }
     }];
     return plotlyData;
   } catch (error) {
@@ -194,6 +194,10 @@ function flattenForSunburst(node, parent = "") {
 fetchAndConvertToSunburst("{{ dataset.id }}").then((data) => {
   var layout = {
     margin: {l: 0, r: 0, b: 30, t: 30},
+    sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+    // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
+
+
   };
   Plotly.newPlot("sunburst", data, layout);
 });
