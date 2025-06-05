@@ -1,0 +1,25 @@
+<script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
+
+<p>Node</p>
+
+<h1>{{ node.name }}</h1>
+
+<div class="row">
+    {% for contact in node.contacts %}
+    <div class="col-md-4">
+    <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
+    <br/>{{ contact.email }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<h2>Datasets</h2>
+
+{% for dataset in datasets %}
+<div>
+<p><a href="/dataset/{{ dataset.id }}">{{ dataset.title }}</a></p>
+
+</div>
+{% endfor %}
