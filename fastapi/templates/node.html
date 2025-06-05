@@ -1,30 +1,64 @@
 <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
+<script src="/assets/script.js"></script>
 
-<p>Node</p>
+<section class="section-dense">
+    <div class="container">
 
-<h1>{{ node.name }}</h1>
+        <h1>{{ node.name }}</h1>
 
-<p>{{ node.description }}</p>
+        <p>{{ node.description }}</p>
 
-<div class="row">
-    {% for contact in node.contacts %}
-    <div class="col-md-4">
-    <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
-    <br/>{{ contact.email }}</p>
+        <div class="row">
+            {% for contact in node.contacts %}
+            <div class="col-md-4">
+                <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
+                <br/>{{ contact.email }}</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
-</div>
+</section>
 
-<h2>Datasets</h2>
+<section class="section-dense section-dark">
+    <div class="container">
 
-{% for dataset in datasets %}
-<div>
-<p>
-    <a href="/dataset/{{ dataset.id }}">{{ dataset.title }}</a>
-    <br/>
-    <b>{{ "{:0,.0f}".format(dataset.statistics.Occurrence) }}</b> occurrences | <b>{{ "{:0,.0f}".format(dataset.statistics.MeasurementOrFact) }}</b> measurements and facts
-</p>
-</div>
-{% endfor %}
+        <h2>Datasets</h2>
+
+        {% for dataset in datasets %}
+        <div>
+            <p>
+                <a href="/dataset/{{ dataset.id }}">{{ dataset.title }}</a>
+                <br/>
+                <b>{{ "{:0,.0f}".format(dataset.statistics.Occurrence) }}</b> occurrences
+                {% if dataset.statistics.MeasurementOrFact %}
+                | <b>{{ "{:0,.0f}".format(dataset.statistics.MeasurementOrFact) }}</b> measurements and facts
+                {% endif %}
+                {% if dataset.statistics.DNADerivedData %}
+                | <b>{{ "{:0,.0f}".format(dataset.statistics.DNADerivedData) }}</b> sequences
+                {% endif %}
+            </p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section class="section-dense">
+    <div id="sunburst" style="height: 600px;"></div>
+</section>
+
+<script>
+
+fetchNodeTaxonomy("{{ node.id }}").then(convertToSunburst).then((data) => {
+    var layout = {
+        margin: {l: 0, r: 0, b: 30, t: 30},
+        sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+        // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
+    };
+    Plotly.newPlot("sunburst", data, layout);
+});
+  
+</script>

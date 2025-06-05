@@ -16,6 +16,24 @@ h2 {
     margin-bottom: 1em;
 }
 
+section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.section-dense {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.section-dark {
+    background-color: var(--light-grey);
+}
+
+.section-light {
+    background-color: #ffffff;
+}
+
 .card {
     border-radius: 10px;
 }
@@ -49,19 +67,6 @@ h2 {
     background-color: var(--highlight);
     color: #ffffff;
     font-weight: normal;
-}
-
-section {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-}
-
-.section-dark {
-    background-color: var(--light-grey);
-}
-
-.section-light {
-    background-color: #ffffff;
 }
 
 .card-title a {

@@ -1,7 +1,12 @@
 <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
+<script src="/assets/script.js"></script>
 
+<section class="section-dense">
+
+<div class="container">
+    
 <p>Dataset</p>
 
 <h1>{{ dataset.title }}</h1>
@@ -57,8 +62,9 @@
         </div>
       </div>
       <div class="col">
-        <div id="sunburst" style="height: 600px;"></div></div>
+        <div id="sunburst" style="height: 600px;"></div>
       </div>
+    </div>
   </div>
   
   <div class="tab-pane" id="quality" role="tabpanel" aria-labelledby="quality-tab">
@@ -132,76 +138,21 @@
   </div>
 </div>
 
+</div>
+
+</section>
+
 <script>
 
-async function fetchAndConvertToSunburst(datasetid) {
-  const url = `https://api.obis.org/statistics/taxonomy?datasetid=${datasetid}`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
-    const taxonomyTree = await response.json();
-    const { labels, parents, values } = flattenForSunburst(taxonomyTree);
-    const plotlyData = [{
-      type: "sunburst",
-      labels,
-      parents,
-      values,
-      leaf: { opacity: 1 },
-      // marker: {
-      //   line: { width: 2 },
-      //   colors: values,
-      //   colorscale: "PuRd"
-      // }
-    }];
-    return plotlyData;
-  } catch (error) {
-    console.error("Failed to fetch or convert taxonomy data:", error.message);
-  }
-}
-
-function flattenForSunburst(node, parent = "") {
-  const labels = [];
-  const parents = [];
-  const values = [];
-
-  function recurse(currentNode, currentParent) {
-    let { name, value, children } = currentNode;
-
-    if (typeof value !== "number" && Array.isArray(children)) {
-      value = children.reduce((sum, child) => {
-        return sum + (typeof child.value === "number" ? child.value : 0);
-      }, 0);
-    }
-
-    labels.push(name);
-    parents.push(currentParent);
-    values.push(value);
-
-    if (children && children.length > 0) {
-      for (const child of children) {
-        recurse(child, name);
-      }
-    }
-  }
-
-  recurse(node, parent);
-  return { labels, parents, values };
-}
-
-fetchAndConvertToSunburst("{{ dataset.id }}").then((data) => {
-  var layout = {
-    margin: {l: 0, r: 0, b: 30, t: 30},
-    sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
-    // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
-
-
-  };
-  Plotly.newPlot("sunburst", data, layout);
+fetchDatasetTaxonomy("{{ dataset.id }}").then(convertToSunburst).then((data) => {
+    var layout = {
+        margin: {l: 0, r: 0, b: 30, t: 30},
+        sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+        // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
+    };
+    Plotly.newPlot("sunburst", data, layout);
 });
-
+  
 mapboxgl.accessToken = "pk.eyJ1IjoiaW9kZXBvIiwiYSI6ImNrd2txMXRyaTFpNjkybm1sZWxwemtrbWsifQ.KtiKSQsLSwvnDtfg9T9qdA";
 
 const map = new mapboxgl.Map({
