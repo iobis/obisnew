@@ -8,7 +8,7 @@ permalink: /contact/
 
 <h1>Contact</h1>
 
-{% assign nodes = site.data.nodes.results | sort: "name" | sort: "name", "OBIS Secretariat" %}
+{% assign nodes = site.data.nodes.results %}
 {% for node in nodes %}
   <section class="section-superdense">
     <h4 class="nodename">{{ node.name }}</h4>
