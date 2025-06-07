@@ -99,6 +99,7 @@
             <label for="entity" class="form-label">Search for</label>
             <select id="entity" class="form-select">
                 <option value="dataset" selected="">Dataset</option>
+                <option value="taxon">Taxon</option>
             </select>
         </div>
         <div class="col-md-4">
@@ -117,11 +118,66 @@
 let currentSkip = 0;
 const pageSize = 10;
 
+const entityConfig = {
+    dataset: {
+        endpoint: 'dataset/search2',
+        template: (item) => `
+            <a href="/dataset/${item.id}"><strong>${item.title}</strong></a><br>
+            <p><b>${item.statistics.Occurrence.toLocaleString("en-US")}</b> records - ${item.url}</p>
+        `
+    },
+    taxon: {
+        endpoint: 'taxon/search',
+        template: (item) => {
+            const lineage = [];
+            if (item.kingdom) lineage.push(item.kingdom);
+            if (item.phylum) lineage.push(item.phylum);
+            if (item.class) lineage.push(item.class);
+            if (item.order) lineage.push(item.order);
+            if (item.family) lineage.push(item.family);
+            if (item.genus) lineage.push(item.genus);
+            
+            return `
+                <div class="taxon-result">
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="/taxon/${item.taxonID}"><strong>${item.scientificName}</strong></a>
+                        ${item.scientificNameAuthorship ? `<span class="text-muted">${item.scientificNameAuthorship}</span>` : ''}
+                        ${item.taxonomicStatus !== 'accepted' ? `<span class="badge bg-warning">${item.taxonomicStatus}</span>` : ''}
+                        ${item.taxonRank ? `<span class="badge bg-light text-dark">${item.taxonRank}</span>` : ''}
+                    </div>
+                    <p>
+                        ${lineage.length > 0 ? lineage.join(' > ') : ''}
+                        ${item.acceptedNameUsage && item.taxonomicStatus !== 'accepted' ? 
+                            `<br>Accepted name: <a href="/taxon/${item.acceptedNameUsageID}">${item.acceptedNameUsage}</a>` : 
+                            ''}
+                    </p>
+                </div>
+            `;
+        }
+    }
+};
+
 async function performSearch(skip = 0) {
     currentSkip = skip;
     const entity = document.getElementById("entity").value;
-    const query = encodeURIComponent(document.getElementById("query").value);
-    const url = `https://api.obis.org/${entity}/search2?q=${query}&size=${pageSize}&skip=${skip}`;
+    const query = document.getElementById("query").value.trim();
+    
+    if (!query) {
+        const resultsDiv = document.getElementById("results");
+        const paginationDiv = document.getElementById("pagination");
+        resultsDiv.innerHTML = "";
+        paginationDiv.innerHTML = "";
+        return;
+    }
+
+    const encodedQuery = encodeURIComponent(query);
+    const config = entityConfig[entity];
+    if (!config) {
+        console.error(`No configuration found for entity: ${entity}`);
+        return;
+    }
+
+    const url = `https://api.obis.org/${config.endpoint}?q=${encodedQuery}&size=${pageSize}&skip=${skip}`;
 
     const resultsDiv = document.getElementById("results");
     const paginationDiv = document.getElementById("pagination");
@@ -134,13 +190,10 @@ async function performSearch(skip = 0) {
 
         if (data && data.results && data.results.length > 0) {
             resultsDiv.innerHTML = "";
-            data.results.forEach(dataset => {
+            data.results.forEach(item => {
                 const div = document.createElement("div");
                 div.className = "result";
-                div.innerHTML = `
-                    <a href="/dataset/${dataset.id}"><strong>${dataset.title}</strong></a><br>
-                    <p><b>${dataset.statistics.Occurrence.toLocaleString("en-US")}</b> records - ${dataset.url}</p>
-                `;
+                div.innerHTML = config.template(item);
                 resultsDiv.appendChild(div);
             });
 
