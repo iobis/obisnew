@@ -122,8 +122,11 @@ const entityConfig = {
     dataset: {
         endpoint: 'dataset/search2',
         template: (item) => `
-            <a href="/dataset/${item.id}"><strong>${item.title}</strong></a><br>
-            <p><b>${item.statistics.Occurrence.toLocaleString("en-US")}</b> records - ${item.url}</p>
+            <div class="d-flex align-items-center gap-2">
+                <a href="/dataset/${item.id}"><strong>${item.title}</strong></a>
+                <span class="badge bg-light text-dark">${item.statistics.Occurrence.toLocaleString("en-US")} records</span>
+            </div>
+            <p>${item.url}</p>
         `
     },
     taxon: {
