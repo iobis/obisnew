@@ -1,0 +1,149 @@
+<script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
+<script src="/assets/script.js"></script>
+
+<section class="section-dense">
+<div class="container">
+    
+<p>Taxon</p>
+
+<div class="d-flex align-items-end gap-2 mb-2">
+    <h1 class="mb-0">{{ taxon.scientificName }}</h1>
+    {% if taxon.scientificNameAuthorship %}
+    <span>{{ taxon.scientificNameAuthorship }}</span>
+    {% endif %}
+    {% if taxon.taxonomicStatus != 'accepted' %}
+    <span class="badge bg-warning">{{ taxon.taxonomicStatus }}</span>
+    {% endif %}
+    <span class="badge bg-light text-dark">{{ taxon.taxonRank }}</span>
+</div>
+
+<p>
+{% if taxon.kingdom %}
+<a href="/taxon/{{ taxon.kingdomid }}">{{ taxon.kingdom }}</a>
+{% endif %}
+{% if taxon.phylum %}
+> <a href="/taxon/{{ taxon.phylumid }}">{{ taxon.phylum }}</a>
+{% endif %}
+{% if taxon.class %}
+> <a href="/taxon/{{ taxon.classid }}">{{ taxon.class }}</a>
+{% endif %}
+{% if taxon.order %}
+> <a href="/taxon/{{ taxon.orderid }}">{{ taxon.order }}</a>
+{% endif %}
+{% if taxon.family %}
+> <a href="/taxon/{{ taxon.familyid }}">{{ taxon.family }}</a>
+{% endif %}
+{% if taxon.genus %}
+> <a href="/taxon/{{ taxon.genusid }}">{{ taxon.genus }}</a>
+{% endif %}
+</p>
+
+{% if taxon.acceptedNameUsage and taxon.taxonomicStatus != 'accepted' %}
+<p>Accepted name: <a href="/taxon/{{ taxon.acceptedNameUsageID }}">{{ taxon.acceptedNameUsage }}</a></p>
+{% endif %}
+
+<!-- <h3>Environment</h3>
+<p>
+{% if taxon.is_marine %}
+<span class="badge bg-primary">Marine</span>
+{% endif %}
+{% if taxon.is_brackish %}
+<span class="badge bg-info">Brackish</span>
+{% endif %}
+{% if taxon.is_freshwater %}
+<span class="badge bg-success">Freshwater</span>
+{% endif %}
+{% if taxon.is_terrestrial %}
+<span class="badge bg-warning">Terrestrial</span>
+{% endif %}
+</p> -->
+
+<!-- {% if taxon.ncbi_id %}
+<h3>External links</h3>
+<p>
+<a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{ taxon.ncbi_id }}" target="_blank">NCBI Taxonomy</a>
+</p>
+{% endif %} -->
+
+<div class="map-container">
+    <div id="map" style="height: 500px;" class="my-5"></div>
+    <div id="legend" class="map-legend">
+        <p>Records</p>
+        <div><span style="background:#2c7bb6"></span>1</div>
+        <div><span style="background:#abd9e9"></span>10</div>
+        <div><span style="background:#ffffbf"></span>100</div>
+        <div><span style="background:#fdae61"></span>1,000</div>
+        <div><span style="background:#d7191c"></span>&gt;10,000</div>
+    </div>
+</div>
+
+</div>
+</section>
+
+<script>
+mapboxgl.accessToken = "pk.eyJ1IjoiaW9kZXBvIiwiYSI6ImNrd2txMXRyaTFpNjkybm1sZWxwemtrbWsifQ.KtiKSQsLSwvnDtfg9T9qdA";
+
+const map = new mapboxgl.Map({
+    container: "map",
+    center: [0, 25],
+    zoom: 0,
+    style: "mapbox://styles/iodepo/cmbnfejkp00mo01qx84wt8pao",
+    projection: "mercator",
+    attributionControl: false
+});
+
+map.on("load", function() {
+    map.addSource("occurrence", {
+        type: "vector",
+        tiles: [
+            "https://api.obis.org/occurrence/tile/{x}/{y}/{z}.mvt?taxonid={{ taxon.taxonID }}"
+        ],
+        scheme: "xyz"
+    });
+
+    map.addLayer({
+        id: "obis-occurrence-layer",
+        type: "fill",
+        source: "occurrence",
+        "source-layer": "grid",
+        paint: {
+            "fill-color": [
+                "interpolate",
+                ["linear"],
+                ["get", "doc_count"],
+                0, "#2c7bb6",
+                10, "#abd9e9",
+                100, "#ffffbf",
+                1000, "#fdae61",
+                10000, "#d7191c"
+            ],
+            "fill-opacity": 0.8
+        }
+    });
+
+    map.addLayer({
+        id: "numbers-layer",
+        type: "symbol",
+        source: "occurrence",
+        "source-layer": "grid",
+        layout: {
+            "text-field": ["to-string", ["get", "doc_count"]],
+            "text-size": 10,
+            "text-anchor": "center"
+        },
+        paint: {
+            "text-color": "#000000",
+            "text-halo-color": "rgba(255, 255, 255, 1)",
+            "text-halo-width": 1,
+            "text-halo-blur": 0
+        }
+    });
+
+    map.addControl(new mapboxgl.ScaleControl({
+        maxWidth: 100,
+        unit: "metric"
+    }));
+});
+</script> 
