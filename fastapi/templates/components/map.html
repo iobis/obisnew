@@ -1,0 +1,81 @@
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    mapboxgl.accessToken = "pk.eyJ1IjoiaW9kZXBvIiwiYSI6ImNrd2txMXRyaTFpNjkybm1sZWxwemtrbWsifQ.KtiKSQsLSwvnDtfg9T9qdA";
+
+    const map = new mapboxgl.Map({
+        container: "map",
+        center: [0, 25],
+        zoom: 0,
+        style: "mapbox://styles/iodepo/cmbnfejkp00mo01qx84wt8pao",
+        projection: "mercator",
+        attributionControl: false
+    });
+
+    map.on("load", function() {
+        map.addSource("occurrence", {
+            type: "vector",
+            tiles: [
+                "https://api.obis.org/occurrence/tile/{x}/{y}/{z}.mvt?{{ filter }}"
+            ],
+            scheme: "xyz"
+        });
+
+        map.addLayer({
+            id: "obis-occurrence-layer",
+            type: "fill",
+            source: "occurrence",
+            "source-layer": "grid",
+            paint: {
+                "fill-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "doc_count"],
+                    0, "#2c7bb6",
+                    10, "#abd9e9",
+                    100, "#ffffbf",
+                    1000, "#fdae61",
+                    10000, "#d7191c"
+                ],
+                "fill-opacity": 0.8
+            }
+        });
+
+        map.addLayer({
+            id: "numbers-layer",
+            type: "symbol",
+            source: "occurrence",
+            "source-layer": "grid",
+            layout: {
+                "text-field": ["to-string", ["get", "doc_count"]],
+                "text-size": 10,
+                "text-anchor": "center"
+            },
+            paint: {
+                "text-color": "#000000",
+                "text-halo-color": "rgba(255, 255, 255, 1)",
+                "text-halo-width": 1,
+                "text-halo-blur": 0
+            }
+        });
+
+        map.addControl(new mapboxgl.ScaleControl({
+            maxWidth: 100,
+            unit: "metric"
+        }));
+    });
+});
+</script>
+
+<div class="map-container">
+    <div id="map" style="height: 500px;" class="my-5"></div>
+    <div id="legend" class="map-legend">
+        <p>Records</p>
+        <div><span style="background:#2c7bb6"></span>1</div>
+        <div><span style="background:#abd9e9"></span>10</div>
+        <div><span style="background:#ffffbf"></span>100</div>
+        <div><span style="background:#fdae61"></span>1,000</div>
+        <div><span style="background:#d7191c"></span>&gt;10,000</div>
+    </div>
+</div> 
