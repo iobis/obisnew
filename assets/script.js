@@ -100,10 +100,11 @@ function renderTable(element, results, totalResults, skip, pageSize, renderItem,
 }
 
 function renderDatasetItem(item) {
+    const recordCount = item.records || (item.statistics && item.statistics.Occurrence);
     return `
         <div class="d-flex align-items-center gap-2">
             <a href="/dataset/${item.id}"><strong>${item.title}</strong></a>
-            <span class="badge bg-light text-dark">${item.statistics.Occurrence.toLocaleString("en-US")} records</span>
+            <span class="badge bg-light text-dark">${recordCount.toLocaleString("en-US")} records</span>
         </div>
         <p>${item.url}</p>
     `;
