@@ -16,7 +16,7 @@ async function fetchDatasetTaxonomy(datasetid) {
     return await response.json();
 }
 
-async function convertToSunburst(taxonomyTree) {
+function convertToSunburst(taxonomyTree) {
     const { labels, parents, values } = flattenForSunburst(taxonomyTree);
     const plotlyData = [{
       type: "sunburst",
@@ -59,4 +59,69 @@ function flattenForSunburst(node, parent = "") {
 
     recurse(node, parent);
     return { labels, parents, values };
+}
+
+function renderTable(results, totalResults, skip, pageSize, renderItem) {
+    const resultsDiv = document.getElementById("results");
+        
+    resultsDiv.innerHTML = "";
+    
+    results.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "result";
+        div.innerHTML = renderItem(item);
+        resultsDiv.appendChild(div);
+    });
+
+    const totalPages = Math.ceil(totalResults / pageSize);
+    const currentPage = Math.floor(skip / pageSize) + 1;
+    
+    const paginationDiv = document.createElement("div");
+    paginationDiv.id = "pagination";
+    paginationDiv.className = "mt-3";
+    resultsDiv.appendChild(paginationDiv);
+
+    let paginationHtml = `<div class="d-flex align-items-center mt-4">`;
+    paginationHtml += `<button class="btn btn-sm me-2" onclick="performSearch(${skip - pageSize})" ${skip === 0 ? 'disabled' : ''}>Previous</button>`;
+    paginationHtml += `<button class="btn btn-sm me-3" onclick="performSearch(${skip + pageSize})" ${skip + pageSize >= totalResults ? 'disabled' : ''}>Next</button>`;
+    paginationHtml += `<div>Showing ${skip + 1}-${Math.min(skip + pageSize, totalResults)} of ${totalResults.toLocaleString("en-US")} results</div>`;
+    paginationHtml += `</div>`;
+    paginationDiv.innerHTML = paginationHtml;
+}
+
+function renderDatasetItem(item) {
+    return `
+        <div class="d-flex align-items-center gap-2">
+            <a href="/dataset/${item.id}"><strong>${item.title}</strong></a>
+            <span class="badge bg-light text-dark">${item.statistics.Occurrence.toLocaleString("en-US")} records</span>
+        </div>
+        <p>${item.url}</p>
+    `;
+}
+
+function renderTaxonItem(item) {
+    const lineage = [];
+    if (item.kingdom) lineage.push(item.kingdom);
+    if (item.phylum) lineage.push(item.phylum);
+    if (item.class) lineage.push(item.class);
+    if (item.order) lineage.push(item.order);
+    if (item.family) lineage.push(item.family);
+    if (item.genus) lineage.push(item.genus);
+    
+    return `
+        <div class="taxon-result">
+            <div class="d-flex align-items-center gap-2">
+                <a href="/taxon/${item.taxonID}"><strong>${item.scientificName}</strong></a>
+                ${item.scientificNameAuthorship ? `<span class="text-muted">${item.scientificNameAuthorship}</span>` : ''}
+                ${item.taxonomicStatus !== 'accepted' ? `<span class="badge bg-warning">${item.taxonomicStatus}</span>` : ''}
+                ${item.taxonRank ? `<span class="badge bg-light text-dark">${item.taxonRank}</span>` : ''}
+            </div>
+            <p>
+                ${lineage.length > 0 ? lineage.join(' > ') : ''}
+                ${item.acceptedNameUsage && item.taxonomicStatus !== 'accepted' ? 
+                    `<br>Accepted name: <a href="/taxon/${item.acceptedNameUsageID}">${item.acceptedNameUsage}</a>` : 
+                    ''}
+            </p>
+        </div>
+    `;
 }
