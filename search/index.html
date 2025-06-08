@@ -158,7 +158,7 @@ async function performSearch(skip = 0) {
         const data = await response.json();
 
         if (data && data.results && data.results.length > 0) {
-            renderTable(data.results, data.total, skip, pageSize, config.renderItem);
+            renderTable("results", data.results, data.total, skip, pageSize, config.renderItem, performSearch);
         } else {
             resultsDiv.innerHTML = "<p>No results found.</p>";
         }
