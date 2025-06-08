@@ -61,8 +61,8 @@ function flattenForSunburst(node, parent = "") {
     return { labels, parents, values };
 }
 
-function renderTable(results, totalResults, skip, pageSize, renderItem) {
-    const resultsDiv = document.getElementById("results");
+function renderTable(element, results, totalResults, skip, pageSize, renderItem, onPageChange) {
+    const resultsDiv = document.getElementById(element);
         
     resultsDiv.innerHTML = "";
     
@@ -82,11 +82,21 @@ function renderTable(results, totalResults, skip, pageSize, renderItem) {
     resultsDiv.appendChild(paginationDiv);
 
     let paginationHtml = `<div class="d-flex align-items-center mt-4">`;
-    paginationHtml += `<button class="btn btn-sm me-2" onclick="performSearch(${skip - pageSize})" ${skip === 0 ? 'disabled' : ''}>Previous</button>`;
-    paginationHtml += `<button class="btn btn-sm me-3" onclick="performSearch(${skip + pageSize})" ${skip + pageSize >= totalResults ? 'disabled' : ''}>Next</button>`;
+    paginationHtml += `<button class="btn btn-sm me-2 pagination-prev" ${skip === 0 ? 'disabled' : ''}>Previous</button>`;
+    paginationHtml += `<button class="btn btn-sm me-3 pagination-next" ${skip + pageSize >= totalResults ? 'disabled' : ''}>Next</button>`;
     paginationHtml += `<div>Showing ${skip + 1}-${Math.min(skip + pageSize, totalResults)} of ${totalResults.toLocaleString("en-US")} results</div>`;
     paginationHtml += `</div>`;
     paginationDiv.innerHTML = paginationHtml;
+
+    const prevButton = paginationDiv.querySelector('.pagination-prev');
+    const nextButton = paginationDiv.querySelector('.pagination-next');
+    
+    if (prevButton && !prevButton.disabled) {
+        prevButton.addEventListener('click', () => onPageChange(skip - pageSize));
+    }
+    if (nextButton && !nextButton.disabled) {
+        nextButton.addEventListener('click', () => onPageChange(skip + pageSize));
+    }
 }
 
 function renderDatasetItem(item) {
