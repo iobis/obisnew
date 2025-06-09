@@ -67,9 +67,19 @@
 </p>
 {% endif %} -->
 
-{% with filter="taxonid=" + taxon.taxonID|string %}
-{% include "components/map.html" %}
-{% endwith %}
+<div class="row gx-5">
+    <div class="col">
+        {% with filter="taxonid=" + taxon.taxonID|string %}
+        {% include "components/map.html" %}
+        {% endwith %}
+    </div>
+</div>
+
+<div class="row gx-5">
+    <div class="col">
+        <div id="timeplot"></div>
+    </div>
+</div>
 
 </div>
 </section>
@@ -109,4 +119,7 @@ async function fetchDatasets(skip = 0) {
 }
 
 fetchDatasets();
+
+renderTimeplot("timeplot", { taxonid: "{{ taxon.taxonID }}" })
+
 </script>
