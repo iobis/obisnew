@@ -146,27 +146,23 @@ async function renderTimeplot(element, query) {
     }
     const results = await response.json();
     
-    // Find min and max years
-    const years = results.map(r => r.year);
-    const minYear = Math.min(...years);
     const maxYear = new Date().getFullYear();
-    const startYear = minYear < 1950 ? 1950 : minYear;
+    const startYear = 1950;
     
-    // Create a map of all years in range
     const yearMap = new Map();
     for (let year = startYear; year <= maxYear; year++) {
         yearMap.set(year, 0);
     }
     
-    // Fill in actual values
-    results.forEach(r => yearMap.set(r.year, r.records));
+    // Only include data points from 1950 onwards
+    results.filter(r => r.year >= startYear).forEach(r => yearMap.set(r.year, r.records));
     
     const data = [{
         type: 'bar',
         x: Array.from(yearMap.keys()),
         y: Array.from(yearMap.values()),
         marker: {
-            color: '#4CAF50'
+            color: '#B1B695'
         }
     }];
 
