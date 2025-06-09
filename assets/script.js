@@ -154,7 +154,6 @@ async function renderTimeplot(element, query) {
         yearMap.set(year, 0);
     }
     
-    // Only include data points from 1950 onwards
     results.filter(r => r.year >= startYear).forEach(r => yearMap.set(r.year, r.records));
     
     const data = [{
