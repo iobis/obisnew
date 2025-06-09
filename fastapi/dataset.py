@@ -23,6 +23,22 @@ def get_quality_statistics(filters: dict):
         print(e)
 
 
+def process_contacts(contacts):
+    unique_contacts = {}
+    
+    for contact in contacts:
+        name = f"{contact.get('givenname', '')} {contact.get('surname', '')}".strip()
+        if not name:
+            continue
+        if name not in unique_contacts or (
+            contact.get('organization') and 
+            not unique_contacts[name].get('organization')
+        ):
+            unique_contacts[name] = contact
+    
+    return list(unique_contacts.values())
+
+
 @router.get("/{dataset_id}", response_class=HTMLResponse)
 async def dataset_page(request: Request, dataset_id: str):
 
@@ -34,6 +50,10 @@ async def dataset_page(request: Request, dataset_id: str):
         response.raise_for_status()
         response_json = response.json()
         dataset = response_json["results"][0]
+        
+        if "contacts" in dataset:
+            dataset["clean_contacts"] = process_contacts(dataset["contacts"])
+            
     except Exception as e:
         print(e)
         raise HTTPException(status_code=404, detail="Dataset not found")

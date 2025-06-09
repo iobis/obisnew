@@ -40,20 +40,21 @@
       <p>URL: <a href="{{ dataset.url }}" target="_blank">{{ dataset.url }}</a></p>
   
       <div class="row">
-        {% for contact in dataset.contacts %}
+        {% for contact in dataset.clean_contacts %}
           <div class="col-md-4">
-          <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
-          <br/>{{ contact.organization }}</p>
+          <p><b>{% if contact.givenname %}{{ contact.givenname }} {% endif %}{% if contact.surname %}{{ contact.surname }}{% endif %}</b>
+          <br/>{% if contact.organization %}{% if contact.organization_oceanexpert_id %}<a href="/organization/{{ contact.organization_oceanexpert_id }}">{% endif %}{{ contact.organization }}{% if contact.organization_oceanexpert_id %}</a>{% endif %}{% endif %}</p>
           </div>
         {% endfor %}
       </div>
   
       <div class="row gx-5">
-        <div class="col">
-          {% with filter="datasetid=" + dataset.id|string %}
-          {% include "components/map.html" %}
-          {% endwith %}
-        </div>
+        {% with filter="datasetid=" + dataset.id|string %}
+        {% include "components/map.html" %}
+        {% endwith %}
+      </div>
+
+      <div class="row gx-5">
         <div class="col">
           <div id="sunburst" style="height: 600px;"></div>
         </div>
