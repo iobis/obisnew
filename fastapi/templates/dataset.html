@@ -42,7 +42,7 @@
       <div class="row">
         {% for contact in dataset.clean_contacts %}
           <div class="col-md-4">
-          <p><b>{% if contact.givenname %}{{ contact.givenname }} {% endif %}{% if contact.surname %}{{ contact.surname }}{% endif %}</b>
+          <p><b>{{ contact.clean_name }}</b>
           <br/>{% if contact.organization %}{% if contact.organization_oceanexpert_id %}<a href="/organization/{{ contact.organization_oceanexpert_id }}">{% endif %}{{ contact.organization }}{% if contact.organization_oceanexpert_id %}</a>{% endif %}{% endif %}</p>
           </div>
         {% endfor %}
