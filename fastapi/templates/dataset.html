@@ -30,7 +30,7 @@
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-    <div class="container">
+    <div class="container mb-5">
       <p>{{ dataset.abstract }}</p>
 
       {% if dataset.citation %}
@@ -81,7 +81,7 @@
 
   <div class="tab-pane" id="quality" role="tabpanel" aria-labelledby="quality-tab">
 
-    <div class="container">
+    <div class="container mb-5">
       <h3>Missing and invalid fields</h3>
 
       {% if quality_statistics.fields %}
