@@ -120,6 +120,6 @@ async function fetchDatasets(skip = 0) {
 
 fetchDatasets();
 
-renderTimeplot("timeplot", { taxonid: "{{ taxon.taxonID }}" })
+renderTimeplot("timeplot", { taxonid: "{{ dataset.id }}" })
 
 </script>
