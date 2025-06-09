@@ -1,14 +1,6 @@
-async function fetchNodeTaxonomy(nodeid) {
-    const url = `https://api.obis.org/statistics/taxonomy?nodeid=${nodeid}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-    }
-    return await response.json();
-}
-
-async function fetchDatasetTaxonomy(datasetid) {
-    const url = `https://api.obis.org/statistics/taxonomy?datasetid=${datasetid}`;
+async function fetchTaxonomy(query) {
+    const params = new URLSearchParams(query);
+    const url = `https://api.obis.org/statistics/taxonomy?${params.toString()}`;
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);

@@ -5,19 +5,7 @@
 
 <section class="section-dense">
     <div class="container">
-
-        <h1>{{ node.name }}</h1>
-
-        <p>{{ node.description }}</p>
-
-        <div class="row">
-            {% for contact in node.contacts %}
-            <div class="col-md-4">
-                <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
-                <br/>{{ contact.email }}</p>
-            </div>
-            {% endfor %}
-        </div>
+        <h1>{{ area.name }}</h1>
     </div>
 </section>
 
@@ -37,22 +25,13 @@
 
 <script>
 
-fetchTaxonomy({ nodeid: "{{ node.id }}" }).then(convertToSunburst).then((data) => {
-    var layout = {
-        margin: {l: 0, r: 0, b: 30, t: 30},
-        sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
-        // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
-    };
-    Plotly.newPlot("sunburst", data, layout);
-});
-
 let currentSkip = 0;
 const pageSize = 10;
 
 async function fetchDatasets(skip = 0) {
     currentSkip = skip;
     
-    const url = `https://api.obis.org/dataset?nodeid={{ node.id }}&size=${pageSize}&skip=${skip}`;
+    const url = `https://api.obis.org/dataset?areaid={{ area.id }}&size=${pageSize}&skip=${skip}`;
 
     const resultsDiv = document.getElementById("datasets");
     resultsDiv.innerHTML = "<p>Searching...</p>";
@@ -73,4 +52,14 @@ async function fetchDatasets(skip = 0) {
 }
 
 fetchDatasets();
+
+fetchTaxonomy({ areaid: "{{ area.id }}" }).then(convertToSunburst).then((data) => {
+    var layout = {
+        margin: {l: 0, r: 0, b: 30, t: 30},
+        sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+        // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
+    };
+    Plotly.newPlot("sunburst", data, layout);
+});
+  
 </script>
