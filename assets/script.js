@@ -136,3 +136,62 @@ function renderTaxonItem(item) {
         </div>
     `;
 }
+
+async function renderTimeplot(element, query) {
+    const params = new URLSearchParams(query);
+    const url = `https://api.obis.org/statistics/years?${params.toString()}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+    }
+    const results = await response.json();
+    
+    // Find min and max years
+    const years = results.map(r => r.year);
+    const minYear = Math.min(...years);
+    const maxYear = new Date().getFullYear();
+    const startYear = minYear < 1950 ? 1950 : minYear;
+    
+    // Create a map of all years in range
+    const yearMap = new Map();
+    for (let year = startYear; year <= maxYear; year++) {
+        yearMap.set(year, 0);
+    }
+    
+    // Fill in actual values
+    results.forEach(r => yearMap.set(r.year, r.records));
+    
+    const data = [{
+        type: 'bar',
+        x: Array.from(yearMap.keys()),
+        y: Array.from(yearMap.values()),
+        marker: {
+            color: '#4CAF50'
+        }
+    }];
+
+    const layout = {
+        title: 'Records per year',
+        xaxis: {
+            title: 'Year',
+            type: 'linear',
+            tickformat: 'd'
+        },
+        yaxis: {
+            title: 'Number of records'
+        },
+        margin: {
+            l: 50,
+            r: 20,
+            b: 50,
+            t: 50,
+            pad: 4
+        },
+        height: 300
+    };
+
+    Plotly.newPlot(element, data, layout, {
+        responsive: true,
+        displayModeBar: false
+    });
+}
