@@ -3,148 +3,156 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
 <script src="/assets/script.js"></script>
 
-<section class="section-dense">
+<section class="section-dense pb-0">
+  <div class="container">
+      
+    <p>Dataset</p>
+    <h1>{{ dataset.title }}</h1>
+    <p>
+      {% for node in dataset.nodes %}
+      <a href="/node/{{ node.id }}"><span class="badge tag">{{ node.name }}</span></a>
+      {% endfor %}
+    </p>
+    <div class="mt-5 mb-3">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="quality-tab" data-bs-toggle="tab" data-bs-target="#quality" type="button" role="tab" aria-controls="profile" aria-selected="false">Data quality</button>
+        </li>
+      </ul>
+    </div>
 
-<div class="container">
-    
-<p>Dataset</p>
-
-<h1>{{ dataset.title }}</h1>
-
-<p>
-  {% for node in dataset.nodes %}
-  <a href="/node/{{ node.id }}"><span class="badge tag">{{ node.name }}</span></a>
-  {% endfor %}
-</p>
-
-<div class="mt-5 mb-3">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="quality-tab" data-bs-toggle="tab" data-bs-target="#quality" type="button" role="tab" aria-controls="profile" aria-selected="false">Data quality</button>
-    </li>
-  </ul>
-</div>
+  </div>
+</section>
 
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-    <p>{{ dataset.abstract }}</p>
 
-    {% if dataset.citation %}
-    <p>Citation: <i>{{ dataset.citation }}</i></p>
-    {% endif %}
+    <div class="container">
+      <p>{{ dataset.abstract }}</p>
 
-    <p>URL: <a href="{{ dataset.url }}" target="_blank">{{ dataset.url }}</a></p>
-
-    <div class="row">
-      {% for contact in dataset.contacts %}
-        <div class="col-md-4">
-        <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
-        <br/>{{ contact.organization }}</p>
+      {% if dataset.citation %}
+      <p>Citation: <i>{{ dataset.citation }}</i></p>
+      {% endif %}
+  
+      <p>URL: <a href="{{ dataset.url }}" target="_blank">{{ dataset.url }}</a></p>
+  
+      <div class="row">
+        {% for contact in dataset.contacts %}
+          <div class="col-md-4">
+          <p><b>{{ contact.givenname }} {{ contact.surname }}</b>
+          <br/>{{ contact.organization }}</p>
+          </div>
+        {% endfor %}
+      </div>
+  
+      <div class="row gx-5">
+        <div class="col">
+          {% with filter="datasetid=" + dataset.id|string %}
+          {% include "components/map.html" %}
+          {% endwith %}
         </div>
-      {% endfor %}
-    </div>
+        <div class="col">
+          <div id="sunburst" style="height: 600px;"></div>
+        </div>
+      </div>
 
-    <div class="row gx-5">
-      <div class="col">
-        {% with filter="datasetid=" + dataset.id|string %}
-        {% include "components/map.html" %}
-        {% endwith %}
-      </div>
-      <div class="col">
-        <div id="sunburst" style="height: 600px;"></div>
+      <div class="row gx-5">
+        <div class="col">
+          <div id="timeplot"></div>
+        </div>
       </div>
     </div>
-
-    <div class="row gx-5">
-      <div class="col">
-        <div id="timeplot"></div>
+  
+    <section class="section-dense section-dark">
+      <div class="container">
+        <div class="row gx-5">
+          <div class="col">
+            <h2>Taxa</h2>
+            <div id="taxa"></div>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="row gx-5">
-      <div class="col">
-        <h2>Taxa</h2>
-        <div id="taxa"></div>
-      </div>
-    </div>
+  
+    </section>
     
   </div>
 
   <div class="tab-pane" id="quality" role="tabpanel" aria-labelledby="quality-tab">
 
-    <h3>Missing and invalid fields</h3>
+    <div class="container">
+      <h3>Missing and invalid fields</h3>
 
-    {% if quality_statistics.fields %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Field</th>
-          <th>Missing</th>
-          <th>Invalid</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for field, stats in quality_statistics.fields.items() %}
-        <tr>
-          <td>{{ field }}</td>
-          <td>{{ "{:0,.0f}".format(stats.missing) if stats.missing else "" }}</td>
-          <td>{{ "{:0,.0f}".format(stats.invalid) if stats.invalid else "" }}</td>
-          <td>
-            <div style="display: flex; align-items: center; gap: 0.5em;">
-              <div class="progress" style="width: 200px;">
-                <div class="progress-bar" role="progressbar" style="width: {{ stats.total / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+      {% if quality_statistics.fields %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Missing</th>
+            <th>Invalid</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for field, stats in quality_statistics.fields.items() %}
+          <tr>
+            <td>{{ field }}</td>
+            <td>{{ "{:0,.0f}".format(stats.missing) if stats.missing else "" }}</td>
+            <td>{{ "{:0,.0f}".format(stats.invalid) if stats.invalid else "" }}</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.5em;">
+                <div class="progress" style="width: 200px;">
+                  <div class="progress-bar" role="progressbar" style="width: {{ stats.total / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span>{{ (stats.total / dataset.statistics.Occurrence * 100)|round(1) }}%</span>
               </div>
-              <span>{{ (stats.total / dataset.statistics.Occurrence * 100)|round(1) }}%</span>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>No missing or invalid fields.</p>
-    {% endif %}
-
-    <h3>Quality flags</h3>
-
-    {% if quality_statistics.flags %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Flag</th>
-          <th>Records</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for flag, records in quality_statistics.flags.items() %}
-        <tr>
-          <td>{{ flag }}</td>
-          <td>{{ "{:0,.0f}".format(records) if records else "" }}</td>
-          <td>
-            <div style="display: flex; align-items: center; gap: 0.5em;">
-              <div class="progress" style="width: 200px;">
-                <div class="progress-bar" role="progressbar" style="width: {{ records / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No missing or invalid fields.</p>
+      {% endif %}
+  
+      <h3>Quality flags</h3>
+  
+      {% if quality_statistics.flags %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Flag</th>
+            <th>Records</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for flag, records in quality_statistics.flags.items() %}
+          <tr>
+            <td>{{ flag }}</td>
+            <td>{{ "{:0,.0f}".format(records) if records else "" }}</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.5em;">
+                <div class="progress" style="width: 200px;">
+                  <div class="progress-bar" role="progressbar" style="width: {{ records / dataset.statistics.Occurrence * 100 }}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span>{{ (records / dataset.statistics.Occurrence * 100)|round(1) }}%</span>
               </div>
-              <span>{{ (records / dataset.statistics.Occurrence * 100)|round(1) }}%</span>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>No quality flags.</p>
-    {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No quality flags.</p>
+      {% endif %}
+  
+    </div>
 
   </div>
 </div>
-
-</section>
 
 <script>
 fetchDatasetTaxonomy("{{ dataset.id }}").then(convertToSunburst).then((data) => {
