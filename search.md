@@ -12,6 +12,7 @@ permalink: /search/
             <select id="entity" class="form-select">
                 <option value="dataset" selected>Dataset</option>
                 <option value="taxon">Taxon</option>
+                <option value="area">Area</option>
             </select>
         </div>
         <div class="col-md-4">
@@ -38,6 +39,10 @@ const entityConfig = {
     taxon: {
         endpoint: 'taxon/search',
         renderItem: renderTaxonItem
+    },
+    area: {
+        endpoint: 'area/search',
+        renderItem: renderAreaItem
     }
 };
 
