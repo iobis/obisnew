@@ -79,6 +79,9 @@
     <div class="col">
         <div id="timeplot"></div>
     </div>
+    <div class="col">
+        <div id="envplot"></div>
+    </div>
 </div>
 
 </div>
@@ -120,6 +123,7 @@ async function fetchDatasets(skip = 0) {
 
 fetchDatasets();
 
-renderTimeplot("timeplot", { taxonid: "{{ dataset.id }}" })
+renderTimeplot("timeplot", { taxonid: "{{ taxon.taxonID }}" })
+renderEnvironmentPlots("envplot", { taxonid: "{{ taxon.taxonID }}" })
 
 </script>

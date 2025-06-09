@@ -190,3 +190,106 @@ async function renderTimeplot(element, query) {
         displayModeBar: false
     });
 }
+
+async function renderEnvironmentPlots(element, query) {
+    const params = new URLSearchParams(query);
+    const url = `https://api.obis.org/statistics/env?${params.toString()}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+    }
+    const data = await response.json();
+
+    const sstData = [{
+        type: 'bar',
+        x: data.sst.map(d => `${d.sst}-${d.sst + 5}`),
+        y: data.sst.map(d => d.records),
+        name: 'SST',
+        marker: {
+            color: '#B1B695'
+        }
+    }];
+
+    const depthData = [{
+        type: 'bar',
+        x: data.depth.map((d, i) => {
+            const nextDepth = i < data.depth.length - 1 ? data.depth[i + 1].from : d.from + 1000;
+            return `${d.from}-${nextDepth}`;
+        }),
+        y: data.depth.map(d => d.records),
+        name: 'Depth',
+        marker: {
+            color: '#B1B695'
+        }
+    }];
+
+    const sstLayout = {
+        xaxis: {
+            title: {
+                text: 'Sea surface temperature (°C)',
+                standoff: 10
+            },
+            type: 'category'
+        },
+        yaxis: {
+            title: {
+                standoff: 10
+            }
+        },
+        margin: {
+            l: 50,
+            r: 20,
+            b: 50,
+            t: 0,
+            pad: 4
+        },
+        height: 150
+    };
+
+    const depthLayout = {
+        xaxis: {
+            title: {
+                text: 'Sample depth (m)',
+                standoff: 10
+            },
+            type: 'category',
+            tickangle: -45,
+            tickfont: {
+                size: 10
+            }
+        },
+        yaxis: {
+            title: {
+                standoff: 10
+            }
+        },
+        margin: {
+            l: 50,
+            r: 20,
+            b: 100,
+            t: 0,
+            pad: 4
+        },
+        height: 150
+    };
+
+    const config = {
+        responsive: true,
+        displayModeBar: false
+    };
+
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.gap = '20px';
+    document.getElementById(element).appendChild(container);
+
+    const sstContainer = document.createElement('div');
+    const depthContainer = document.createElement('div');
+
+    container.appendChild(sstContainer);
+    container.appendChild(depthContainer);
+
+    Plotly.newPlot(sstContainer, sstData, sstLayout, config);
+    Plotly.newPlot(depthContainer, depthData, depthLayout, config);
+}
