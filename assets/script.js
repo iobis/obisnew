@@ -137,6 +137,17 @@ function renderTaxonItem(item) {
     `;
 }
 
+function renderAreaItem(item) {
+    return `
+        <div class="area-result">
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <a href="/area/${item.id}"><strong>${item.name}</strong></a>
+                ${item.type && item.type != 'obis' ? `<span class="badge bg-light text-dark">${item.type.toUpperCase()}</span>` : ''}
+            </div>
+        </div>
+    `;
+}
+
 async function renderTimeplot(element, query) {
     const params = new URLSearchParams(query);
     const url = `https://api.obis.org/statistics/years?${params.toString()}`;
