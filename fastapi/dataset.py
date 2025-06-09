@@ -27,14 +27,20 @@ def process_contacts(contacts):
     unique_contacts = {}
     
     for contact in contacts:
-        name = f"{contact.get('givenname', '')} {contact.get('surname', '')}".strip()
+        givenname = contact.get('givenname') or ''
+        surname = contact.get('surname') or ''
+        name = f"{givenname} {surname}".strip()
+        if not name:
+            name = contact.get('organization') or ''
         if not name:
             continue
+            
         if name not in unique_contacts or (
             contact.get('organization') and 
             not unique_contacts[name].get('organization')
         ):
             unique_contacts[name] = contact
+            unique_contacts[name]["clean_name"] = name
     
     return list(unique_contacts.values())
 

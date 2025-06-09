@@ -11,28 +11,28 @@ templates = Environment(loader=FileSystemLoader("templates"))
 shell_templates = Jinja2Templates(directory="static")
 
 
-@router.get("/{node_id}", response_class=HTMLResponse)
-async def node_page(request: Request, node_id: str):
+@router.get("/{organization_id}", response_class=HTMLResponse)
+async def organization_page(request: Request, organization_id: str):
 
-    api_url = f"https://api.obis.org/node/{node_id}"
+    api_url = f"https://api.obis.org/institute/{organization_id}"
     try:
         response = requests.get(api_url)
         response.raise_for_status()
         response_json = response.json()
-        node = response_json["results"][0]
+        organization = response_json["results"][0]
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=404, detail="Node not found")
+        raise HTTPException(status_code=404, detail="Organization not found")
 
-    block = templates.get_template("node.html").render(
-        node=node
+    block = templates.get_template("organization.html").render(
+        organization=organization
     )
 
     return shell_templates.TemplateResponse(
         request=request,
         name="portal.html",
         context={
-            "title": node["name"],
+            "title": organization["name"],
             "content": block
         }
     )
