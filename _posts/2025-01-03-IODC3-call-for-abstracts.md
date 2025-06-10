@@ -17,8 +17,6 @@ title: IODC-III, call for abstracts - Join forces with OBIS to showcase the impo
   of fit-for-purpose and actionable data for ocean biodiversity
 ---
 
-# IODC-III, call for abstracts - Join forces with OBIS to showcase the importance of fit-for-purpose and actionable data for ocean biodiversity
-
 Organized by the International Oceanographic Data and Information Exchange (IODE)—a programme of UNESCO's Intergovernmental Oceanographic Commission—the International Ocean Data Conference (IODC) is the not-to-be-missed meeting point for the global ocean data community. The conference is an active collaboration platform that drives progress on critical marine data-related issues and facilitates connections between scientists and decision-makers. The third edition of the IODC (IODC-III) will take place on March 10–11, 2025, online and in Santa Marta, Colombia, under the theme "The Data We Need for the Ocean We Want", focusing on marine data actionability and developing capacity in ocean science through improved data-, information-, and knowledge-sharing.
 
 Opening the IODC-III program, OBIS will host a session titled *"Ocean Biodiversity: How we can collectively contribute to the needs of the Convention on Biological Diversity's Global Biodiversity Framework (GBF) and the UN Convention on the Law of the Sea's Biodiversity Beyond National Jurisdiction (BBNJ)",* chaired by Katherine Tattersall and Dan Lear, the OBIS Steering Group and Data Coordination Group Co-Chairs, with support from Ward Appeltans, OBIS Programme Manager.

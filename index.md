@@ -19,7 +19,7 @@ layout: default
     <h2>Use cases</h2>
 
     {% assign filtered_usecases = site.usecases %}
-    {% include usecase_cards.html %}
+    {% include usecase_cards.html filtered_usecases=filtered_usecases limit=6 %}
   </div>
 </section>
 
