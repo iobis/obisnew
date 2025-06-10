@@ -3,11 +3,11 @@ layout: post
 title:  "And yet another post"
 date:   2023-11-06 19:27:47 +0100
 categories: jekyll update
-image: 3.jpg
+image: /images/3.jpg
 tags:
   secretariat
   testing
-intro: This is the intro text for each article that can explain what we are talking about and entice the reader to pursue their reading.
+excerpt: This is the intro text for each article that can explain what we are talking about and entice the reader to pursue their reading.
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et venenatis risus. Nulla facilisi. Duis fringilla ante sit amet commodo posuere. Etiam non dui egestas, feugiat tortor id, rutrum lorem. Cras sodales fermentum quam, vitae luctus orci tincidunt sed. Proin tellus nunc, iaculis eu blandit at, ultrices quis felis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur semper urna nec ipsum sollicitudin, in pharetra diam tincidunt. Cras aliquet congue venenatis. Pellentesque metus est, vestibulum et aliquam in, aliquam mollis augue. Phasellus in enim at purus vulputate eleifend eu non tellus. Integer condimentum odio quam, eu pulvinar urna efficitur ac. Vivamus et pulvinar quam, sed pellentesque nibh. Vestibulum tempus turpis vitae nisi accumsan molestie.
