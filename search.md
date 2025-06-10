@@ -13,6 +13,7 @@ permalink: /search/
                 <option value="dataset" selected>Dataset</option>
                 <option value="taxon">Taxon</option>
                 <option value="area">Area</option>
+                <option value="country">Country</option>
             </select>
         </div>
         <div class="col-md-4">
@@ -43,6 +44,10 @@ const entityConfig = {
     area: {
         endpoint: 'area/search',
         renderItem: renderAreaItem
+    },
+    country: {
+        endpoint: 'country/search',
+        renderItem: renderCountryItem
     }
 };
 
