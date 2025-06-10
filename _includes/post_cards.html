@@ -1,5 +1,5 @@
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for post in filtered_posts %}
+    {% for post in filtered_posts limit:include.limit %}
     <div class="col">
       <div class="card">
         <div src="#" style="height: 200px;" class="card-img-top">

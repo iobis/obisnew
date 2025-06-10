@@ -109,24 +109,18 @@ def remove_includes(post, include_file=None):
     return post
 
 
-def migrate_all_posts():
-    # Get all markdown files in the _posts directory
-    posts_dir = os.path.join(source_dir, "_posts")
+def migrate_all_posts(processors):
+    posts_dir = os.path.join(source_dir, "_posts", "en")
     for root, dirs, files in os.walk(posts_dir):
         for file in files:
             if file.endswith('.md'):
-                # Get relative path from _posts
-                rel_path = os.path.relpath(os.path.join(root, file), posts_dir)
-                # Remove language directory (e.g., 'en/') if present
-                if '/' in rel_path:
-                    rel_path = rel_path.split('/', 1)[1]
-                # Create target path
-                target_path = os.path.join("_posts", rel_path)
-                # Migrate the file
-                migrate_file(os.path.join("_posts", rel_path), target_path, [migrate_images, process_thumbnail])
+                source_path = os.path.join("_posts", "en", file)
+                target_path = os.path.join("_posts", file)
+                migrate_file(source_path, target_path, processors)
 
 
 if __name__ == "__main__":
+
     update_source_folder()
 
     # pages
@@ -138,7 +132,8 @@ if __name__ == "__main__":
 
     migrate_file("whatwedo/core-activities.md", "whatwedo/core-activities.md", [remove_script_blocks, migrate_images])
     migrate_file("whatwedo/impact.md", "whatwedo/impact.md", [remove_script_blocks, migrate_images])
-    migrate_file("whatwedo/objectives.md", "whatwedo/objectives.md", [remove_script_blocks, migrate_images])
+    migrate_file("whatwedo/objectives.md", "whatwedo/objectives.md", [remove_script_blocks, migrate_images, remove_includes])
 
-    # Migrate all posts
-    migrate_all_posts()
+    # posts
+
+    migrate_all_posts([migrate_images, process_thumbnail, remove_includes])

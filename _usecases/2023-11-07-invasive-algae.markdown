@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Invasive marine algae in the Mediterranean was misidentified for decades"
-date:   2023-11-06 19:27:47 +0100
-image: 3.jpg
+title: "Invasive marine algae in the Mediterranean was misidentified for decades"
+date: 2023-11-06 19:27:47 +0100
+image: /images/3.jpg
 tags:
   - invasive species
   - macroalgae

@@ -8,8 +8,8 @@ layout: default
 
     <p class="tagline">Get the latest on all things OBIS</p>
 
-    {% assign filtered_posts = site.posts %}
-    {% include post_cards.html filtered_posts=filtered_posts %}
+    {% assign filtered_posts = site.posts | sort: 'date' | reverse %}
+    {% include post_cards.html filtered_posts=filtered_posts limit=6 %}
   </div>
 
 </section>
