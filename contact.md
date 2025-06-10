@@ -6,7 +6,7 @@ permalink: /contact/
 
 <div class="section-light">
 
-<h1>Contact</h1>
+<h1>Team and contacts</h1>
 
 {% assign nodes = site.data.nodes.results %}
 {% for node in nodes %}

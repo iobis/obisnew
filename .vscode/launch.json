@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Migrate pages",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "scripts/migrate_pages.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {"PYTHONPATH": "${workspaceFolder}"}
+        },   
+    ]
+}
