@@ -140,6 +140,16 @@ function renderAreaItem(item) {
     `;
 }
 
+function renderCountryItem(item) {
+    return `
+        <div class="area-result">
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <a href="/country/${item.id}"><strong>${item.country}</strong></a>
+            </div>
+        </div>
+    `;
+}
+
 async function renderTimeplot(element, query) {
     const params = new URLSearchParams(query);
     const url = `https://api.obis.org/statistics/years?${params.toString()}`;
