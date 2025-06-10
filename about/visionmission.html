@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/assets/main.css" />
     <title>
     
-        Search | Ocean Biodiversity Information System
+        Vision and mission | Ocean Biodiversity Information System
     
     </title>
 </head>
@@ -98,93 +98,34 @@
   </nav>
 
     <div class="container mt-5 mb-5">
-      <div class="section-light">
-    <h1 class="mb-4">Search</h1>
-    <form class="row g-2 align-items-end mb-4" onsubmit="event.preventDefault(); performSearch();">
-        <div class="col-md-2">
-            <label for="entity" class="form-label">Search for</label>
-            <select id="entity" class="form-select">
-                <option value="dataset" selected="">Dataset</option>
-                <option value="taxon">Taxon</option>
-                <option value="area">Area</option>
-                <option value="country">Country</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label for="query" class="form-label">Search term</label>
-            <input type="text" id="query" class="form-control" placeholder="Enter search term" value="" />
-        </div>
-        <div class="col-md-2 d-grid">
-            <button type="submit" class="btn">Search</button>
-        </div>
-    </form>
-    <div id="results" class="mt-5"></div>
-</div>
+      <h1 id="vision-and-mission">Vision and mission</h1>
 
-<script src="/assets/script.js"></script>
+<script src="/json/milestones.json"></script>
 
-<script>
-let currentSkip = 0;
-const pageSize = 10;
+<script src="/assets/d3/d3.min.js"></script>
 
-const entityConfig = {
-    dataset: {
-        endpoint: 'dataset/search2',
-        renderItem: renderDatasetItem
-    },
-    taxon: {
-        endpoint: 'taxon/search',
-        renderItem: renderTaxonItem
-    },
-    area: {
-        endpoint: 'area/search',
-        renderItem: renderAreaItem
-    },
-    country: {
-        endpoint: 'country/search',
-        renderItem: renderCountryItem
-    }
-};
+<script src="/js/timeline.js"></script>
 
-async function performSearch(skip = 0) {
-    currentSkip = skip;
-    const entity = document.getElementById("entity").value;
-    const query = document.getElementById("query").value.trim();
-    
-    if (!query) {
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "";
-        return;
-    }
+<p><strong>VISION</strong> To be the most comprehensive gateway to the world’s ocean biodiversity and biogeographic data and information required to address pressing coastal and world ocean concerns.</p>
 
-    const encodedQuery = encodeURIComponent(query);
-    const config = entityConfig[entity];
-    if (!config) {
-        console.error(`No configuration found for entity: ${entity}`);
-        return;
-    }
+<p><strong>MISSION</strong> To build and maintain a global alliance that collaborates with scientific communities to facilitate free and open access to, and application of, biodiversity and biogeographic data and information on marine life.</p>
 
-    const url = `https://api.obis.org/${config.endpoint}?q=${encodedQuery}&size=${pageSize}&skip=${skip}`;
+<p>More than 20 OBIS nodes around the world connect 500 institutions from 56 countries. Collectively, they have provided over 45 million observations of nearly 120 000 marine species, from Bacteria to Whales, from the surface to 10 900 meters depth, and from the Tropics to the Poles. The datasets are integrated so you can search and map them all seamlessly by species name, higher taxonomic level, geographic
+area, depth, time and environmental parameters. OBIS emanates from the Census of Marine Life (2000-2010) and was adopted as a project
+under IOC-UNESCO’s International Oceanographic Data and Information (IODE) programme in 2009.</p>
 
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "<p>Searching...</p>";
+<h4 id="objectives">Objectives</h4>
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data && data.results && data.results.length > 0) {
-            renderTable("results", data.results, data.total, skip, pageSize, config.renderItem, performSearch);
-        } else {
-            resultsDiv.innerHTML = "<p>No results found.</p>";
-        }
-    } catch (error) {
-        resultsDiv.innerHTML = "<p>Error fetching results.</p>";
-        console.error(error);
-    }
-}
-</script>
-
+<ul>
+  <li>Provide world’s largest scientific knowledge base on the diversity, distribution and abundance of all marine organisms in an integrated and standardized format (as a contribution to Aichi biodiversity target 19)</li>
+  <li>Facilitate the integration of biogeographic information with physical and chemical environmental data, to facilitate climate change studies</li>
+  <li>Contribute to a concerted global approach to marine biodiversity and ecosystem monitoring, through guidelines on standards and best practices, including globally agreed Essential Ocean Variables, observing plans, and indicators in collaboration with other IOC programs</li>
+  <li>Support the assessment of the state of marine biological diversity to better inform policy makers, and respond to the needs of regional and global processes such as the UN World Ocean Assessment (WOA) and the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES)</li>
+  <li>Provide data, information and tools to support the identification of biologically important marine and coastal habitats for the development of marine spatial plans and other area-based management plans (e.g. for the identification of Ecologically or Biologically Significant marine Areas (EBSAs) under the Convention on Biological Diversity.</li>
+  <li>Increase the institutional and professional capacity in marine biodiversity and ecosystem data collection, management, analysis and reporting tools, as part of IOC’s Ocean Teacher Global Academy (OTGA)</li>
+  <li>Provide information and guidance on the use of biodiversity data for education and research and provide state of the art services to society including decision makers</li>
+  <li>Provide a global platform for international collaboration between national and regional marine biodiversity and ecosystem monitoring programmes, enhancing Member States and global contributions to inter alia, the Global Ocean Observing System (GOOS) and the Global Earth Observing System of Systems (GEOSS)</li>
+</ul>
 
     </div>
 
