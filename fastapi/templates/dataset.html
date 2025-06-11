@@ -161,33 +161,7 @@ fetchTaxonomy({ datasetid: "{{ dataset.id }}" }).then(convertToSunburst).then((d
     Plotly.newPlot("sunburst", data, layout);
 });
 
-let currentSkip = 0;
-const pageSize = 10;
-
-async function fetchTaxa(skip = 0) {
-    currentSkip = skip;
-    
-    const url = `https://api.obis.org/checklist?datasetid={{ dataset.id }}&size=${pageSize}&skip=${skip}`;
-
-    const resultsDiv = document.getElementById("taxa");
-    resultsDiv.innerHTML = "<p>Searching...</p>";
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data && data.results && data.results.length > 0) {
-            renderTable("taxa", data.results, data.total, skip, pageSize, renderTaxonItem, fetchTaxa);
-        } else {
-            resultsDiv.innerHTML = "<p>No results found.</p>";
-        }
-    } catch (error) {
-        resultsDiv.innerHTML = "<p>Error fetching results.</p>";
-        console.error(error);
-    }
-}
-
-fetchTaxa();
+renderTaxonTable("taxa", "/checklist", { datasetid: "{{ dataset.id }}" })
 
 renderTimeplot("timeplot", { datasetid: "{{ dataset.id }}" })
 </script>
