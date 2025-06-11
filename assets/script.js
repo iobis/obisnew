@@ -77,7 +77,7 @@ function renderTable(element, results, totalResults, skip, pageSize, renderItem,
     paginationHtml += `<button class="btn btn-sm me-2 pagination-prev" ${skip === 0 ? 'disabled' : ''}>Previous</button>`;
     paginationHtml += `<button class="btn btn-sm pagination-next" ${skip + pageSize >= totalResults ? 'disabled' : ''}>Next</button>`;
     paginationHtml += `</div>`;
-    paginationHtml += `<div>Showing ${skip + 1}-${Math.min(skip + pageSize, totalResults)} of ${totalResults.toLocaleString("en-US")} results</div>`;
+    paginationHtml += `<div class="ms-3">Showing ${skip + 1}-${Math.min(skip + pageSize, totalResults)} of ${totalResults.toLocaleString("en-US")} results</div>`;
     paginationHtml += `</div>`;
     paginationDiv.innerHTML = paginationHtml;
 
