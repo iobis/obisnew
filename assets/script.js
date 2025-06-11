@@ -15,7 +15,8 @@ function convertToSunburst(taxonomyTree) {
       labels,
       parents,
       values,
-      leaf: { opacity: 1 }
+      leaf: { opacity: 1 },
+      branchvalues: "total"
     }];
     return plotlyData;
 }
