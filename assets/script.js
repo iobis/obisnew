@@ -72,9 +72,11 @@ function renderTable(element, results, totalResults, skip, pageSize, renderItem,
     paginationDiv.id = "pagination";
     paginationDiv.className = "mt-3";
 
-    let paginationHtml = `<div class="d-flex align-items-center mt-4">`;
+    let paginationHtml = `<div class="d-flex flex-column flex-md-row align-items-center mt-4">`;
+    paginationHtml += `<div class="d-flex mb-2 mb-md-0">`;
     paginationHtml += `<button class="btn btn-sm me-2 pagination-prev" ${skip === 0 ? 'disabled' : ''}>Previous</button>`;
-    paginationHtml += `<button class="btn btn-sm me-3 pagination-next" ${skip + pageSize >= totalResults ? 'disabled' : ''}>Next</button>`;
+    paginationHtml += `<button class="btn btn-sm pagination-next" ${skip + pageSize >= totalResults ? 'disabled' : ''}>Next</button>`;
+    paginationHtml += `</div>`;
     paginationHtml += `<div>Showing ${skip + 1}-${Math.min(skip + pageSize, totalResults)} of ${totalResults.toLocaleString("en-US")} results</div>`;
     paginationHtml += `</div>`;
     paginationDiv.innerHTML = paginationHtml;
