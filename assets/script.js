@@ -306,3 +306,42 @@ async function renderEnvironmentPlots(element, query) {
     Plotly.newPlot(sstContainer, sstData, sstLayout, config);
     Plotly.newPlot(depthContainer, depthData, depthLayout, config);
 }
+
+function renderDatasetTable(containerId, filter, pageSize = 10) {
+    let currentSkip = 0;
+
+    async function fetchDatasets(skip = 0) {
+        currentSkip = skip;
+        
+        const params = new URLSearchParams({
+            size: pageSize,
+            skip: skip,
+            ...filter
+        });
+        
+        const url = `https://api.obis.org/dataset?${params}`;
+        const resultsDiv = document.getElementById(containerId);
+        resultsDiv.innerHTML = "<p>Searching...</p>";
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data && data.results && data.results.length > 0) {
+                renderTable(containerId, data.results, data.total, skip, pageSize, renderDatasetItem, fetchDatasets);
+            } else {
+                resultsDiv.innerHTML = "<p>No results found.</p>";
+            }
+        } catch (error) {
+            resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+            console.error(error);
+        }
+    }
+
+    fetchDatasets();
+
+    return {
+        refresh: () => fetchDatasets(currentSkip),
+        goToPage: (skip) => fetchDatasets(skip)
+    };
+}
