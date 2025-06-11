@@ -27,7 +27,7 @@ async def taxon(request: Request, taxon_id: int):
 
         return shell_templates.TemplateResponse(
             request=request,
-            name="portal.html",
+            name="portal/index.html",
             context={
                 "title": taxon["scientificName"],
                 "content": taxon_block

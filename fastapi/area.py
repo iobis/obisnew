@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 import requests
+import os
 
 router = APIRouter()
 
@@ -21,13 +22,13 @@ async def area(request: Request, area_id: int):
             
         area = data["results"][0]
         
-        area_block = templates.get_template("area.html").render(
+        area_block = templates.get_template("portal/index.html").render(
             area=area
         )
 
         return shell_templates.TemplateResponse(
             request=request,
-            name="portal.html",
+            name="portal/index.html",
             context={
                 "title": area["name"],
                 "content": area_block

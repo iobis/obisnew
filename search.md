@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Search
-permalink: /search
 ---
 
 <div class="section-light">

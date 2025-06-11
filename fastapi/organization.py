@@ -30,7 +30,7 @@ async def organization_page(request: Request, organization_id: str):
 
     return shell_templates.TemplateResponse(
         request=request,
-        name="portal.html",
+        name="portal/index.html",
         context={
             "title": organization["name"],
             "content": block

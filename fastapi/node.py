@@ -30,7 +30,7 @@ async def node_page(request: Request, node_id: str):
 
     return shell_templates.TemplateResponse(
         request=request,
-        name="portal.html",
+        name="portal/index.html",
         context={
             "title": node["name"],
             "content": block

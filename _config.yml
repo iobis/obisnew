@@ -2,6 +2,7 @@ title: Ocean Biodiversity Information System (OBIS)
 email: helpdesk@obis.org
 baseurl: ""
 url: "https://obis.org"
+permalink: pretty
 
 plugins:
   - jekyll-feed
