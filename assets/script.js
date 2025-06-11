@@ -55,14 +55,14 @@ function flattenForSunburst(node, parent = "") {
 
 function renderTable(element, results, totalResults, skip, pageSize, renderItem, onPageChange) {
     const resultsDiv = document.getElementById(element);
-        
-    resultsDiv.innerHTML = "";
+    
+    const content = document.createElement('div');
     
     results.forEach(item => {
         const div = document.createElement("div");
         div.className = "result";
         div.innerHTML = renderItem(item);
-        resultsDiv.appendChild(div);
+        content.appendChild(div);
     });
 
     const totalPages = Math.ceil(totalResults / pageSize);
@@ -71,7 +71,6 @@ function renderTable(element, results, totalResults, skip, pageSize, renderItem,
     const paginationDiv = document.createElement("div");
     paginationDiv.id = "pagination";
     paginationDiv.className = "mt-3";
-    resultsDiv.appendChild(paginationDiv);
 
     let paginationHtml = `<div class="d-flex align-items-center mt-4">`;
     paginationHtml += `<button class="btn btn-sm me-2 pagination-prev" ${skip === 0 ? 'disabled' : ''}>Previous</button>`;
@@ -79,6 +78,11 @@ function renderTable(element, results, totalResults, skip, pageSize, renderItem,
     paginationHtml += `<div>Showing ${skip + 1}-${Math.min(skip + pageSize, totalResults)} of ${totalResults.toLocaleString("en-US")} results</div>`;
     paginationHtml += `</div>`;
     paginationDiv.innerHTML = paginationHtml;
+
+    content.appendChild(paginationDiv);
+
+    resultsDiv.innerHTML = '';
+    resultsDiv.appendChild(content);
 
     const prevButton = paginationDiv.querySelector('.pagination-prev');
     const nextButton = paginationDiv.querySelector('.pagination-next');
@@ -321,6 +325,13 @@ function renderDatasetTable(containerId, filter, pageSize = 10) {
         
         const url = `https://api.obis.org/dataset?${params}`;
         const resultsDiv = document.getElementById(containerId);
+
+        // fix height
+        if (Array.from(resultsDiv.children).some(child => child.tagName === 'DIV')) {
+            const height = resultsDiv.offsetHeight;
+            resultsDiv.style.height = height + "px";
+        }
+
         resultsDiv.innerHTML = "<p>Searching...</p>";
 
         try {
@@ -336,10 +347,16 @@ function renderDatasetTable(containerId, filter, pageSize = 10) {
             resultsDiv.innerHTML = "<p>Error fetching results.</p>";
             console.error(error);
         }
+
+        // reset height
+        requestAnimationFrame(() => {
+            resultsDiv.style.height = "";
+        });
+
     }
 
     fetchDatasets();
-
+        
     return {
         refresh: () => fetchDatasets(currentSkip),
         goToPage: (skip) => fetchDatasets(skip)
