@@ -10,7 +10,7 @@
           {% if post.excerpt %}<p class="card-text">{{ post.excerpt }}</p>{% endif %}
           <div>
             {% for tag in post.tags %}
-                <a href="/tag/{{ tag }}"><span class="badge tag mb-1">{{ tag }}</span></a>
+                <a href="/tag/{{ tag | slugify }}"><span class="badge tag mb-1">{{ tag }}</span></a>
             {% endfor %}
           </div>
         </div>
