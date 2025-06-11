@@ -94,8 +94,17 @@
     </div>
 </section>        
 
+<section class="section-dense section-light">
+    <div class="container">
+        <h2>Child taxa</h2>
+        <div id="children"></div>
+    </div>
+</section>        
+
 <script>
 renderDatasetTable("datasets", { taxonid: "{{ taxon.taxonID }}" });
 renderTimeplot("timeplot", { taxonid: "{{ taxon.taxonID }}" })
 renderEnvironmentPlots("envplot", { taxonid: "{{ taxon.taxonID }}" })
+renderTaxonTable("children", "/taxon/{{ taxon.taxonID }}/children", {})
+
 </script>

@@ -358,3 +358,51 @@ function renderDatasetTable(containerId, filter, pageSize = 10) {
     fetchDatasets();
         
 }
+
+function renderTaxonTable(containerId, endpoint, filter, pageSize = 10) {
+    let currentSkip = 0;
+
+    async function fetchTaxa(skip = 0) {
+        currentSkip = skip;
+        
+        const params = new URLSearchParams({
+            size: pageSize,
+            skip: skip,
+            ...filter
+        });
+        
+        const url = `https://api.obis.org${endpoint}?${params}`;
+        const resultsDiv = document.getElementById(containerId);
+
+        // fix height
+        if (Array.from(resultsDiv.children).some(child => child.tagName === 'DIV')) {
+            const height = resultsDiv.offsetHeight;
+            resultsDiv.style.height = height + "px";
+        }
+
+        resultsDiv.innerHTML = "<p>Searching...</p>";
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data && data.results && data.results.length > 0) {
+                renderTable(containerId, data.results, data.total, skip, pageSize, renderTaxonItem, fetchTaxa);
+            } else {
+                resultsDiv.innerHTML = "<p>No results found.</p>";
+            }
+        } catch (error) {
+            resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+            console.error(error);
+        }
+
+        // reset height
+        requestAnimationFrame(() => {
+            resultsDiv.style.height = "";
+        });
+
+    }
+
+    fetchTaxa();
+        
+}
