@@ -121,6 +121,7 @@
         <thead>
           <tr>
             <th>Flag</th>
+            <th>Dropped</th>
             <th>Records</th>
             <th></th>
           </tr>
@@ -129,7 +130,16 @@
           {% for flag, records in quality_statistics.flags.items() %}
           <tr>
             <td>{{ flag }}</td>
-            <td>{{ "{:0,.0f}".format(records) if records else "" }}</td>
+            <td>
+              {% if flag in ['NO_COORD', 'NO_MATCH', 'NOT_MARINE', 'LAT_OUT_OF_RANGE', 'LON_OUT_OF_RANGE'] %}
+                <i class="bi bi-check-lg"></i>
+              {% endif %}
+            </td>
+            <td>
+              <a href="https://api.obis.org/occurrence?dropped=include&absence=include&datasetid={{ dataset.id }}&flags={{ flag }}&size=100" target="_blank">
+                {{ "{:0,.0f}".format(records) if records else "" }}
+              </a>
+            </td>
             <td>
               <div style="display: flex; align-items: center; gap: 0.5em;">
                 <div class="progress" style="width: 200px;">
