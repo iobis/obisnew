@@ -9,6 +9,9 @@ services:
     volumes:
       - ./:/srv/jekyll
       - ./_site:/srv/jekyll/_site
+    environment:
+      - JEKYLL_ENV=production
+      - JEKYLL_URL=${SITE_URL:-https://obis.org}
 
   fastapi:
     build:
