@@ -22,7 +22,7 @@ async def area(request: Request, area_id: int):
             
         area = data["results"][0]
         
-        area_block = templates.get_template("portal/index.html").render(
+        area_block = templates.get_template("area.html").render(
             area=area
         )
 
