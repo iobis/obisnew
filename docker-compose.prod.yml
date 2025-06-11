@@ -6,7 +6,6 @@ services:
     command: jekyll build
     environment:
       - JEKYLL_ENV=production
-      - JEKYLL_URL=${SITE_URL:-https://obis.org}
     volumes:
       - ./:/srv/jekyll
       - ./_site:/srv/jekyll/_site
