@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/assets/main.css" />
+    <title>
+    
+        Streamlining and enriching the analysis of OBIS data using R | Ocean Biodiversity Information System (OBIS)
+    
+    </title>
+</head>
+
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="/">Ocean Biodiversity Information System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          
+          <li class="nav-item">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Who we are
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/about/visionmission">Vision and mission</a></li>
+              
+                <li><a class="dropdown-item" href="/about/nodes">Nodes</a></li>
+              
+                <li><a class="dropdown-item" href="/about/governance">Governance</a></li>
+              
+                <li><a class="dropdown-item" href="/contact">Team and contacts</a></li>
+              
+                <li><a class="dropdown-item" href="/about/partner">Become a partner</a></li>
+              
+            </ul>
+            
+          </li>
+          
+          <li class="nav-item">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                What we do
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/whatwedo/core-activities">Core activities</a></li>
+              
+                <li><a class="dropdown-item" href="/whatwedo/impact">Impact</a></li>
+              
+                <li><a class="dropdown-item" href="/whatwedo/objectives">Objectives</a></li>
+              
+                <li><a class="dropdown-item" href="/usecases">Use cases</a></li>
+              
+            </ul>
+            
+          </li>
+          
+          <li class="nav-item">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Data
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/search">Access data</a></li>
+              
+                <li><a class="dropdown-item" href="/data/contribute">Contribute data</a></li>
+              
+                <li><a class="dropdown-item" href="/data/quality">Quality control</a></li>
+              
+                <li><a class="dropdown-item" href="/data/cite">How to cite OBIS</a></li>
+              
+                <li><a class="dropdown-item" href="/data/datapolicy">Data policy</a></li>
+              
+            </ul>
+            
+          </li>
+          
+          <li class="nav-item">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Community
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/news">News</a></li>
+              
+                <li><a class="dropdown-item" href="/community/coordinationgroups">Coordination groups</a></li>
+              
+                <li><a class="dropdown-item" href="https://obis.discourse.group/">OBIS Discourse</a></li>
+              
+            </ul>
+            
+          </li>
+          
+          <li class="nav-item">
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Resources
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="https://manual.obis.org">OBIS manual</a></li>
+              
+                <li><a class="dropdown-item" href="https://github.com/iobis">OBIS GitHub</a></li>
+              
+                <li><a class="dropdown-item" href="https://classroom.oceanteacher.org/tag/index.php?tc=3&tag=ioc_programme%3A%3Aobis">OBIS courses on OTGA</a></li>
+              
+                <li><a class="dropdown-item" href="https://docs.gbif.org/publishing-dna-derived-data/en/">DNA derived data publishing</a></li>
+              
+                <li><a class="dropdown-item" href="https://www.youtube.com/playlist?list=PLlgUwSvpCFS4TS7ZN0fhByj_3EBZ5lXbF">OBIS YouTube</a></li>
+              
+            </ul>
+            
+          </li>
+          
+          <li class="nav-item ms-2">
+            <a class="btn btn-primary nav-link" href="/search">Search</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contribute</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Data</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Resources
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#">Manual</a></li>
+              <li><a class="dropdown-item" href="#">Outreach</a></li>
+              <li><a class="dropdown-item" href="#">Publications</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div> -->
+
+    </div>
+  </nav>
+
+    <div class="container container-post mt-5">
+        <p>News</p>
+        <h1>Streamlining and enriching the analysis of OBIS data using R</h1>
+        
+        <p>OBIS is the largest global repository of marine biodiversity data. As such, there is considerable interest among the research community in using OBIS data for large scale macroecological and biogeographic analyses. This is reflected in the number of citations of OBIS in the scientific literature. To pick on one very recent, high profile example, OBIS data were integral to Woolley et al.’s demonstration that diversity in deep sea brittle stars is driven by energy availability.</p>
+
+<p>When compiling datasets for this kind of analysis, researchers will typically interact with OBIS via the web portal. Certainly we have done this in the past, although I have also collaborated more directly with OBIS data managers, and for intensive projects such as Alun’s PhD, we have remotely accessed the back-end PostgreSQL OBIS database. These methods are all adequate, but they are not always entirely transparent or repeatable, can be labour intensive (both on the part of researchers and the OBIS team), and require all researchers to find their own solution afresh.</p>
+
+<p>In addition, OBIS data are usually just the starting point for a more detailed analysis of species occurrences or biodiversity patterns over space or through time. Very often, we wish to enrich basic occurrence data with information from other sources, usually relating either to the taxa in question (e.g. more detailed taxonomic or biological data), or the environment in which they occur (including for example physical structure, climatology, and productivity), or both. Again, researchers have generally found their own solutions to these issues - in the brittle star paper linked to above, for example, occurrence records were linked to global datasets of bathymetry, sea-floor temperature, and Net Primary Productivity, among other environmental variables. Based on discussions with numerous colleagues, however, these steps - linking and enriching spatial datasets - are frequently considered challenging and time consuming, and because specific methods adopted by individual researchers are not always described in sufficient detail to be exactly replicated, wheels are often re-invented.</p>
+
+<p>A final common operation is to crop OBIS and/or environmental data to a study region of interest. 
+Many such regions are defined at marineregions, which also provides downloadable geometries. It is already possible to incorporate some of these into analyses (see diagram), but combining different spatial data formats, including points (e.g. occurrences), grids (e.g. environmental data) and polygons (e.g. political or biogeographic regions) remains a significant challenge to many ecological researchers.</p>
+
+<p>Our intention as part of the DIPS 4 Ocean Assessments project is to streamline this generic workflow, using the widely adopted statistical computing environment R to make programmatic access to OBIS data straightforward, and to facilitate a number of common operations such as those mentioned above. Building on progress made within the OBIS secretariat - in particular, Pieter Provoost’s robis package - and during a hack event held in December 2015, involving various experts including Scott Chamberlain from rOpenSci, we will provide tools and tutorials to help researchers interested in the following broad classes of questions:</p>
+
+<ol>
+  <li>Where does my study species occur?</li>
+  <li>Which species occur in my study area?</li>
+  <li>What are the environmental conditions within my study area, or experienced by my study species?</li>
+</ol>
+
+<p>These simple questions are a starting point to much more general questions - for example, generalising (1) to a list of species, and then linking this with (3), allows for the analysis of community patterns of environmental tolerances; defining the study area in (2) as a cell on a spatial grid, and then iterating across cells, allows for gridded estimates of diversity, and so on. Given that OBIS occurrence data, and many spatial environmental layers, are time-stamped, tracking patterns in taxon-level occupancy or region-level diversity through time, as well as temporal relationships between diversity and environment, is also possible. Developing the statistical methodology to infer robust temporal relationships is the subject of Alun’s PhD, and while such analyses are not straightforward, we will be able to provide illustrative examples and some guidelines for best practice.</p>
+
+<p>The diagram below illustrates some of the example workflows that we think are most commonly required by biodiversity scientists, and indicates existing R packages or code in development that enables researchers to simply, openly, and reproducibly navigate through certain common pathways. By including examples of different kinds of spatial data, we hope that this framework will be easily extendible to incorporate a wide range of different datasets of potential natural and anthropogenic drivers of diversity. We welcome suggestions and feature requests.</p>
+
+<p><img src="/images/analysis.png" class="img-responsive" /></p>
+
+    </div>
+
+    
+  </body>
+</html>
