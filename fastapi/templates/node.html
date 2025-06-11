@@ -46,31 +46,6 @@ fetchTaxonomy({ nodeid: "{{ node.id }}" }).then(convertToSunburst).then((data) =
     Plotly.newPlot("sunburst", data, layout);
 });
 
-let currentSkip = 0;
-const pageSize = 10;
+renderDatasetTable("datasets", { nodeid: "{{ node.id }}" });
 
-async function fetchDatasets(skip = 0) {
-    currentSkip = skip;
-    
-    const url = `https://api.obis.org/dataset?nodeid={{ node.id }}&size=${pageSize}&skip=${skip}`;
-
-    const resultsDiv = document.getElementById("datasets");
-    resultsDiv.innerHTML = "<p>Searching...</p>";
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data && data.results && data.results.length > 0) {
-            renderTable("datasets", data.results, data.total, skip, pageSize, renderDatasetItem, fetchDatasets);
-        } else {
-            resultsDiv.innerHTML = "<p>No results found.</p>";
-        }
-    } catch (error) {
-        resultsDiv.innerHTML = "<p>Error fetching results.</p>";
-        console.error(error);
-    }
-}
-
-fetchDatasets();
 </script>
