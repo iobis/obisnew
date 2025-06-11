@@ -104,6 +104,11 @@ def remove_image_blocks(post):
     return post
 
 
+def remove_lines(post):
+    post.content = re.sub(r'---', '', post.content)
+    return post
+
+
 def remove_includes(post, include_file=None):
     if include_file:
         pattern = r'{%\s*include\s+' + re.escape(include_file) + r'\s*%}'
@@ -148,6 +153,12 @@ if __name__ == "__main__":
     migrate_file("whatwedo/impact.md", "whatwedo/impact.md", [remove_script_blocks, migrate_images])
     migrate_file("whatwedo/objectives.md", "whatwedo/objectives.md", [remove_script_blocks, migrate_images, remove_includes])
 
+    migrate_file("data/contribute.md", "data/contribute.md", [remove_script_blocks, migrate_images, remove_includes, remove_lines])
+    migrate_file("data/quality.md", "data/quality.md", [remove_script_blocks, migrate_images, remove_includes, remove_lines])
+    migrate_file("data/cite.md", "data/cite.md", [remove_script_blocks, migrate_images, remove_includes, remove_lines])
+    migrate_file("data/datapolicy.md", "data/datapolicy.md", [remove_script_blocks, migrate_images, remove_includes, remove_lines])
+    migrate_file("community/coordinationgroups.md", "community/coordinationgroups.md", [remove_script_blocks, migrate_images, remove_includes, remove_lines])
+
     # posts and usecases
 
-    migrate_posts([migrate_images, process_thumbnail, remove_includes])
+    # migrate_posts([migrate_images, process_thumbnail, remove_includes])
