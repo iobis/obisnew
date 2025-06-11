@@ -27,7 +27,7 @@ async def country(request: Request, country_id: int):
 
         return shell_templates.TemplateResponse(
             request=request,
-            name="portal.html",
+            name="portal/index.html",
             context={
                 "title": country["country"],
                 "content": country_block
