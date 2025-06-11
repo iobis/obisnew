@@ -357,8 +357,4 @@ function renderDatasetTable(containerId, filter, pageSize = 10) {
 
     fetchDatasets();
         
-    return {
-        refresh: () => fetchDatasets(currentSkip),
-        goToPage: (skip) => fetchDatasets(skip)
-    };
 }
