@@ -408,3 +408,58 @@ function renderTaxonTable(containerId, endpoint, filter, pageSize = 10) {
     fetchTaxa();
         
 }
+
+async function renderMeasurementTypes(element, filter) {
+    const params = new URLSearchParams({
+        facets: 'measurementTypeCombination',
+        dropped: 'include',
+        absence: 'include',
+        ...filter
+    });
+    
+    const url = `https://api.obis.org/facet?${params}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+    }
+    const data = await response.json();
+    
+    const resultsDiv = document.getElementById(element);
+    if (!data.results.measurementTypeCombination || 
+        !Array.isArray(data.results.measurementTypeCombination) || 
+        data.results.measurementTypeCombination.length === 0) {
+        resultsDiv.innerHTML = "<p>No measurement types found.</p>";
+        return;
+    }
+
+    let tableHtml = `
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Measurement type</th>
+                    <th>Measurement type ID</th>
+                    <th>Records</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    data.results.measurementTypeCombination.forEach(item => {
+        const [name, uri] = item.key.split('|');
+        tableHtml += `
+            <tr>
+                <td>${name}</td>
+                <td><a href="${uri}" target="_blank">${uri}</a></td>
+                <td>${item.records.toLocaleString("en-US")}</td>
+            </tr>
+        `;
+    });
+
+    tableHtml += `
+            </tbody>
+        </table>
+    `;
+
+    resultsDiv.innerHTML = tableHtml;
+}
+
