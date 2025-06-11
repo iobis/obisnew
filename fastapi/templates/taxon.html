@@ -67,7 +67,7 @@
 </p>
 {% endif %} -->
 
-<div class="row gx-5">
+<div class="row">
     <div class="col">
         {% with filter="taxonid=" + taxon.taxonID|string %}
         {% include "components/map.html" %}
@@ -75,7 +75,7 @@
     </div>
 </div>
 
-<div class="row gx-5">
+<div class="row">
     <div class="col-12 col-md-6">
         <div id="timeplot"></div>
     </div>

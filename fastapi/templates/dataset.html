@@ -48,13 +48,13 @@
         {% endfor %}
       </div>
   
-      <div class="row gx-5">
+      <div class="row">
         {% with filter="datasetid=" + dataset.id|string %}
         {% include "components/map.html" %}
         {% endwith %}
       </div>
 
-      <div class="row gx-5 align-items-center">
+      <div class="row align-items-center">
         <div class="col-12 col-md-6">
           <div id="timeplot"></div>
         </div>
@@ -66,7 +66,7 @@
     </div>
     <section class="section-dense section-dark">
       <div class="container">
-        <div class="row gx-5">
+        <div class="row">
           <div class="col">
             <h2>Taxa</h2>
             <div id="taxa"></div>
