@@ -1,17 +1,15 @@
 version: '3.8'
 
 services:
-  jekyll:
+  build:
     image: jekyll/jekyll:latest
-    command: sh -c "jekyll build && jekyll serve --host 0.0.0.0"
-    ports:
-      - "4000:4000"
-    volumes:
-      - ./:/srv/jekyll
-      - ./_site:/srv/jekyll/_site
+    command: jekyll build
     environment:
       - JEKYLL_ENV=production
       - JEKYLL_URL=${SITE_URL:-https://obis.org}
+    volumes:
+      - ./:/srv/jekyll
+      - ./_site:/srv/jekyll/_site
 
   fastapi:
     build:
@@ -27,6 +25,9 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "8002:80"
+      - "80:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./_site:/usr/share/nginx/html  # Serve Jekyll static files
+      - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - build
