@@ -1,6 +1,8 @@
 :root {
     --light-grey: #f6f6f6;
     --highlight: #B1B695;
+    --mof: #648DB3;
+    --dna: #DA6C6C;
 }
 
 a, .nav-link, .nav-link:hover {
@@ -62,16 +64,19 @@ section {
     border: 0px;
 }
 
-.card .badge {
+.tag {
     background-color: var(--highlight);
     color: #ffffff;
     font-weight: normal;
+    font-size: 0.9rem;
 }
 
-.badge {
-    background-color: var(--highlight);
-    color: #ffffff;
-    font-weight: normal;
+.tag-mof {
+    background-color: var(--mof);
+}
+
+.tag-dna {
+    background-color: var(--dna);
 }
 
 .btn, .btn:hover, .btn:focus, .btn:focus-visible, .btn:active, .btn:target, .btn:disabled {
@@ -97,10 +102,6 @@ section {
     font-size: 1.3rem;
     margin-top: 1.2rem;
     margin-bottom: 1.7rem;
-}
-
-.tag {
-    font-size: 0.9rem;
 }
 
 .intro {

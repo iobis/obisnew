@@ -12,6 +12,12 @@
       {% for node in dataset.nodes %}
       <a href="/node/{{ node.id }}"><span class="badge tag">{{ node.name }}</span></a>
       {% endfor %}
+      {% if dataset.statistics.MeasurementOrFact > 0 %}
+      <span class="badge tag tag-mof">MeasurementOrFact</span>
+      {% endif %}
+      {% if dataset.statistics.DNADerivedData > 0 %}
+      <span class="badge tag tag-dna">DNADerivedData</span>
+      {% endif %}
     </p>
     <div class="mt-5 mb-3">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
