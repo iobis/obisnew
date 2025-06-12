@@ -44,6 +44,10 @@
 <p>Accepted name: <a href="/taxon/{{ taxon.acceptedNameUsageID }}">{{ taxon.acceptedNameUsage }}</a></p>
 {% endif %}
 
+{% if taxon.vernacularNames %}
+<p>Vernacular names: {{ taxon.vernacularNames | join(', ') }}</p>
+{% endif %}
+
 <p>
     <a href="https://www.marinespecies.org/aphia.php?p=taxdetails&id={{ taxon.taxonID }}" target="_blank"><span class="badge tag tag-mof">WoRMS: {{ taxon.taxonID }}</span></a>
     {% if taxon.ncbi_id %}
