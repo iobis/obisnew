@@ -166,3 +166,7 @@ section {
     margin: 0;
     padding: 0;
 }
+
+.card-title a {
+    text-decoration: none;
+}
