@@ -44,6 +44,16 @@
 <p>Accepted name: <a href="/taxon/{{ taxon.acceptedNameUsageID }}">{{ taxon.acceptedNameUsage }}</a></p>
 {% endif %}
 
+<p>
+    <a href="https://www.marinespecies.org/aphia.php?p=taxdetails&id={{ taxon.taxonID }}" target="_blank"><span class="badge tag tag-mof">WoRMS: {{ taxon.taxonID }}</span></a>
+    {% if taxon.ncbi_id %}
+    <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi/wwwtax.cgi?mode=Info&id={{ taxon.taxonID }}" target="_blank"><span class="badge tag tag-mof">NCBI: {{ taxon.ncbi_id }}</span></a>
+    {% endif %}
+    {% if taxon.bold_id %}
+    <a href="https://v3.boldsystems.org/index.php/Taxbrowser_Taxonpage?taxid={{ taxon.taxonID }}" target="_blank"><span class="badge tag tag-mof">BOLD: {{ taxon.bold_id }}</span></a>
+    {% endif %}
+</p>
+
 <!-- <h3>Environment</h3>
 <p>
 {% if taxon.is_marine %}
