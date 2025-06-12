@@ -1,7 +1,10 @@
 title: Ocean Biodiversity Information System (OBIS)
-email: helpdesk@obis.org
+description: Ocean Biodiversity Information System (OBIS)
 baseurl: ""
-url: "https://obis.org"
+url: ""
+
+markdown: kramdown
+encoding: UTF-8
 permalink: pretty
 
 plugins:
