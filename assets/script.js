@@ -469,3 +469,71 @@ async function renderMeasurementTypes(element, filter) {
     resultsDiv.innerHTML = tableHtml;
 }
 
+async function renderDNATable(element, filter) {
+    const params = new URLSearchParams({
+        composite: true,
+        facets: 'pcr_primer_name_forward,pcr_primer_name_reverse,target_gene,pcr_primer_forward,pcr_primer_reverse,seq_meth,pcr_primer_reference',
+        ...filter
+    });
+    
+    const url = `https://api.obis.org/facet?${params}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+    }
+    const data = await response.json();
+    
+    const resultsDiv = document.getElementById(element);
+    if (!data.results || data.results.length === 0) {
+        resultsDiv.innerHTML = "<p>No sequence related metadata found.</p>";
+        return;
+    }
+
+    let html = '';
+    data.results.forEach((item, index) => {
+        const key = item.key;
+        html += `
+            <div class="mb-4">
+                <h4 class="d-flex justify-content-between align-items-center">
+                    Primer set ${index + 1}
+                </h4>
+                <p>${item.records.toLocaleString("en-US")} records</p>
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <th>Target gene</th>
+                            <td>${key.target_gene || '-'}</td>
+                        </tr>
+                        <tr>
+                            <th style="width: 200px;">Forward primer name</th>
+                            <td>${key.pcr_primer_name_forward || '-'}</td>
+                        </tr>
+                        <tr>
+                            <th>Reverse primer name</th>
+                            <td>${key.pcr_primer_name_reverse || '-'}</td>
+                        </tr>
+                        <tr>
+                            <th>Forward primer</th>
+                            <td>${key.pcr_primer_forward || '-'}</td>
+                        </tr>
+                        <tr>
+                            <th>Reverse primer</th>
+                            <td>${key.pcr_primer_reverse || '-'}</td>
+                        </tr>
+                        <tr>
+                            <th>Sequencing method</th>
+                            <td>${key.seq_meth || '-'}</td>
+                        </tr>
+                        <tr>
+                            <th>Reference</th>
+                            <td>${key.pcr_primer_reference}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    });
+
+    resultsDiv.innerHTML = html;
+}
+

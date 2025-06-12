@@ -30,6 +30,9 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="mof-tab" data-bs-toggle="tab" data-bs-target="#mof" type="button" role="tab" aria-controls="profile" aria-selected="false">Measurement types</button>
         </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dna-tab" data-bs-toggle="tab" data-bs-target="#dna" type="button" role="tab" aria-controls="profile" aria-selected="false">DNA derived data</button>
+        </li>
       </ul>
     </div>
 
@@ -175,6 +178,13 @@
       <div id="mofs"></div>
     </div>
   </div>
+
+  <div class="tab-pane" id="dna" role="tabpanel" aria-labelledby="dna-tab">
+    <div class="container mb-5">
+      <h3>DNA derived data</h3>
+      <div id="dnas"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -191,4 +201,5 @@ renderTaxonTable("taxa", "/checklist", { datasetid: "{{ dataset.id }}" })
 
 renderTimeplot("timeplot", { datasetid: "{{ dataset.id }}" })
 renderMeasurementTypes("mofs", { datasetid: "{{ dataset.id }}" })
+renderDNATable("dnas", { datasetid: "{{ dataset.id }}" })
 </script>
