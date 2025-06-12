@@ -186,14 +186,17 @@ async function renderTimeplot(element, query) {
     }];
 
     const layout = {
-        title: 'Records per year',
         xaxis: {
             title: 'Year',
             type: 'linear',
             tickformat: 'd'
         },
         yaxis: {
-            title: 'Number of records'
+            automargin: true,
+            title: {
+                text: 'Records',
+                standoff: 10
+            }
         },
         margin: {
             l: 50,
@@ -253,6 +256,7 @@ async function renderEnvironmentPlots(element, query) {
         },
         yaxis: {
             title: {
+                text: "Records",
                 standoff: 10
             }
         },
@@ -280,6 +284,7 @@ async function renderEnvironmentPlots(element, query) {
         },
         yaxis: {
             title: {
+                text: "Records",
                 standoff: 10
             }
         },
@@ -290,7 +295,7 @@ async function renderEnvironmentPlots(element, query) {
             t: 0,
             pad: 4
         },
-        height: 150
+        height: 170
     };
 
     const config = {
