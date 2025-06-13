@@ -27,12 +27,16 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="quality-tab" data-bs-toggle="tab" data-bs-target="#quality" type="button" role="tab" aria-controls="profile" aria-selected="false">Data quality</button>
         </li>
+        {% if dataset.statistics.MeasurementOrFact > 0 %}
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="mof-tab" data-bs-toggle="tab" data-bs-target="#mof" type="button" role="tab" aria-controls="profile" aria-selected="false">Measurement types</button>
         </li>
+        {% endif %}
+        {% if dataset.statistics.DNADerivedData > 0 %}
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="dna-tab" data-bs-toggle="tab" data-bs-target="#dna" type="button" role="tab" aria-controls="profile" aria-selected="false">DNA derived data</button>
         </li>
+        {% endif %}
       </ul>
     </div>
 
@@ -198,8 +202,11 @@ fetchTaxonomy({ datasetid: "{{ dataset.id }}" }).then(convertToSunburst).then((d
 });
 
 renderTaxonTable("taxa", "/checklist", { datasetid: "{{ dataset.id }}" })
-
 renderTimeplot("timeplot", { datasetid: "{{ dataset.id }}" })
+{% if dataset.statistics.MeasurementOrFact > 0 %}
 renderMeasurementTypes("mofs", { datasetid: "{{ dataset.id }}" })
+{% endif %}
+{% if dataset.statistics.DNADerivedData > 0 %}
 renderDNATable("dnas", { datasetid: "{{ dataset.id }}" })
+{% endif %}
 </script>
