@@ -420,6 +420,7 @@ async function renderMeasurementTypes(element, filter) {
         facets: 'measurementTypeCombination',
         dropped: 'include',
         absence: 'include',
+        size: 100,
         ...filter
     });
     
