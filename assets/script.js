@@ -526,7 +526,7 @@ async function renderDNATable(element, filter) {
                         </tr>
                         <tr>
                             <th>Reference</th>
-                            <td>${key.pcr_primer_reference}</td>
+                            <td>${key.pcr_primer_reference || '-'}</td>
                         </tr>
                     </tbody>
                 </table>
