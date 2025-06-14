@@ -47,21 +47,46 @@
   <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
     <div class="container mb-5">
-      <p>{{ dataset.abstract }}</p>
-
-      {% if dataset.citation %}
-      <p>Citation: <i>{{ dataset.citation }}</i></p>
-      {% endif %}
-  
-      <p>URL: <a href="{{ dataset.url }}" target="_blank">{{ dataset.url }}</a></p>
-  
+      
       <div class="row">
-        {% for contact in dataset.clean_contacts %}
-          <div class="col-md-4">
-          <p><b>{{ contact.clean_name }}</b>
-          <br/>{% if contact.organization %}{% if contact.organization_oceanexpert_id %}<a href="/organization/{{ contact.organization_oceanexpert_id }}">{% endif %}{{ contact.organization }}{% if contact.organization_oceanexpert_id %}</a>{% endif %}{% endif %}</p>
+        <div class="col col-9">
+          <p>{{ dataset.abstract }}</p>
+
+          {% if dataset.citation %}
+          <p>Citation: <i>{{ dataset.citation }}</i></p>
+          {% endif %}
+      
+          <p>URL: <a href="{{ dataset.url }}" target="_blank">{{ dataset.url }}</a></p>
+      
+          <div class="row">
+            {% for contact in dataset.clean_contacts %}
+              <div class="col-md-4">
+              <p><b>{{ contact.clean_name }}</b>
+              <br/>{% if contact.organization %}{% if contact.organization_oceanexpert_id %}<a href="/organization/{{ contact.organization_oceanexpert_id }}">{% endif %}{{ contact.organization }}{% if contact.organization_oceanexpert_id %}</a>{% endif %}{% endif %}</p>
+              </div>
+            {% endfor %}
           </div>
-        {% endfor %}
+    
+        </div>
+        <div class="col col-3" style="text-align: right;">
+
+          <div>
+            <div class="display-6 fw-bold">{{ "{:0,.0f}".format(dataset.statistics.Occurrence) }}</div>
+            <div>occurrence records</div>
+          </div>
+          {% if dataset.statistics.MeasurementOrFact %}
+          <div>
+            <div class="display-6 fw-bold mt-3">{{ "{:0,.0f}".format(dataset.statistics.MeasurementOrFact) }}</div>
+            <div>measurements and facts</div>
+          </div>
+          {% endif %}
+          {% if dataset.statistics.DNADerivedData %}
+          <div>
+            <div class="display-6 fw-bold mt-3">{{ "{:0,.0f}".format(dataset.statistics.DNADerivedData) }}</div>
+            <div>sequences</div>
+          </div>
+          {% endif %}
+        </div>
       </div>
   
       <div class="row">
