@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  build:
+  jekyll:
     image: jekyll/jekyll:latest
     command: jekyll build
     environment:
@@ -16,17 +16,20 @@ services:
       dockerfile: Dockerfile.fastapi
     volumes:
       - ./fastapi:/app
-      - ./_site:/app/static  # Serve shared assets
+      - ./_site:/app/static
     command: uvicorn main:app --host 0.0.0.0 --port 8001
     ports:
       - "8001:8001"
+    depends_on:
+      - jekyll
 
   nginx:
     image: nginx:alpine
     ports:
       - "8002:80"
     volumes:
-      - ./_site:/usr/share/nginx/html  # Serve Jekyll static files
+      - ./_site:/usr/share/nginx/html
       - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - build
+      - jekyll
+      - fastapi
