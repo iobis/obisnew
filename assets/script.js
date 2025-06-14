@@ -538,3 +538,105 @@ async function renderDNATable(element, filter) {
     resultsDiv.innerHTML = html;
 }
 
+async function renderPublications(element, defaultYear = new Date().getFullYear()) {
+    const container = document.getElementById(element);
+    container.innerHTML = `
+        <div class="row">
+            <div class="col-12 mt-4">
+                <div id="publications-graph"></div>
+            </div>
+            <div class="col-12 mt-4">
+                <div id="publications-table"></div>
+            </div>
+        </div>
+    `;
+
+    const graphResponse = await fetch('https://api.obis.org/publications/graph');
+    if (!graphResponse.ok) {
+        throw new Error(`HTTP error ${graphResponse.status}`);
+    }
+    const graphData = await graphResponse.json();
+
+    const plotlyData = [{
+        type: 'bar',
+        x: graphData.results.map(d => d.year),
+        y: graphData.results.map(d => d.publications),
+        marker: {
+            color: '#B1B695'
+        }
+    }];
+
+    const layout = {
+        xaxis: {
+            title: 'Year',
+            type: 'linear',
+            tickformat: 'd'
+        },
+        yaxis: {
+            title: {
+                text: 'Publications',
+                standoff: 10
+            }
+        },
+        margin: {
+            l: 50,
+            r: 20,
+            b: 50,
+            t: 20,
+            pad: 4
+        },
+        height: 200
+    };
+
+    Plotly.newPlot('publications-graph', plotlyData, layout, {
+        responsive: true,
+        displayModeBar: false
+    });
+
+    async function renderYearPublications(year) {
+        const tableDiv = document.getElementById('publications-table');
+        tableDiv.innerHTML = '<p>Loading publications...</p>';
+
+        try {
+            const response = await fetch(`https://api.obis.org/publications/${year}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error ${response.status}`);
+            }
+            const data = await response.json();
+
+            if (!data.results || data.results.length === 0) {
+                tableDiv.innerHTML = `<p>No publications found for ${year}.</p>`;
+                return;
+            }
+
+            let html = `
+                <h4>Publications in ${year}</h4>
+                <ul class="list-unstyled mt-4">
+            `;
+
+            data.results.forEach(pub => {
+                html += `
+                    <li class="mb-3">
+                        ${pub.rr}
+                        ${pub.pubinst ? `<a href="https://www.vliz.be/imisdocs/publications/${pub.pubinst}" class="badge badge-download ms-2">download publication</a>` : ''}
+                    </li>
+                `;
+            });
+
+            html += `</ul>`;
+
+            tableDiv.innerHTML = html;
+        } catch (error) {
+            tableDiv.innerHTML = '<p>Error loading publications.</p>';
+            console.error(error);
+        }
+    }
+
+    document.getElementById('publications-graph').on('plotly_click', function(data) {
+        const year = data.points[0].x;
+        renderYearPublications(year);
+    });
+
+    renderYearPublications(defaultYear);
+}
+

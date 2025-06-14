@@ -78,6 +78,8 @@ menu:
       url: "https://obis.discourse.group/"
   - title: "Resources"
     subitems:
+    - title: "Publications citing OBIS"
+      url: "/resources/publications"
     - title: "OBIS manual"
       url: "https://manual.obis.org"
     - title: "OBIS GitHub"

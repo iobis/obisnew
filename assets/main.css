@@ -94,6 +94,13 @@ section {
     border-color: var(--highlight);
 }
 
+.badge-download {
+    color: #000000;
+    background-color: #eeeeee;
+    text-decoration: none;
+    font-weight: normal;
+}
+
 .card-title a {
     color: #000000;
 }
