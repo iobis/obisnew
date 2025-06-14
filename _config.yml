@@ -72,6 +72,8 @@ menu:
     subitems:
     - title: "News"
       url: "/news"
+    - title: "Events"
+      url: "/events"
     - title: "Coordination groups"
       url: "/community/coordinationgroups"
     - title: "OBIS Discourse"

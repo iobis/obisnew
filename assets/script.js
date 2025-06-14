@@ -640,3 +640,68 @@ async function renderPublications(element, defaultYear = new Date().getFullYear(
     renderYearPublications(defaultYear);
 }
 
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    const options = { day: 'numeric', month: 'long' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+async function renderEvents(element) {
+    const now = new Date();
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
+    const startDate = lastMonth.toISOString().split('T')[0];
+    const endDate = new Date(now.getFullYear(), now.getMonth() + 12, 0).toISOString().split('T')[0];
+
+    const url = `https://www.oceanexpert.org/api/v1/getEventCalendar/269.json?start=${startDate}&end=${endDate}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+    }
+    const data = await response.json();
+    
+    const container = document.getElementById(element);
+    if (!data.events || Object.keys(data.events).length === 0) {
+        container.innerHTML = '<p>No upcoming events found.</p>';
+        return;
+    }
+
+    let html = '';
+    Object.entries(data.events).forEach(([month, events]) => {
+        html += `
+            <div class="mb-4">
+                <h5>${month}</h5>
+                <ul class="list-unstyled">
+        `;
+
+        events.forEach(event => {
+            const location = event.city ? `${event.city}${event.country ? `, ${event.country}` : ''}` : event.country || '';
+            const startDate = formatDate(event.startOn);
+            const endDate = formatDate(event.endOn);
+            const dateStr = startDate === endDate ? startDate : `${startDate} - ${endDate}`;
+            
+            html += `
+                <li class="mb-3">
+                    <div class="row">
+                        <div class="col-3">
+                            ${dateStr}
+                        </div>
+                        <div class="col-9">
+                            <div class="fw-bold"><a href="https://www.oceanexpert.org/event/${event.idEvent}" target="_blank">${event.title}</a></div>
+                            ${event.shorttitle ? `<div>${event.shorttitle}</div>` : ''}
+                            ${location ? `<div>${location}</div>` : ''}
+                            ${event.isOpen ? `<div>${event.isOpen}</div>` : ''}
+                        </div>
+                    </div>
+                </li>
+            `;
+        });
+
+        html += `
+                </ul>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
