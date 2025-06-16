@@ -254,13 +254,15 @@ async function renderEnvironmentPlots(element, query) {
                 text: 'Sea surface temperature (°C)',
                 standoff: 10
             },
-            type: 'category'
+            type: 'category',
+            fixedrange: true
         },
         yaxis: {
             title: {
                 text: "Records",
                 standoff: 10
-            }
+            },
+            fixedrange: true
         },
         margin: {
             l: 50,
@@ -282,13 +284,15 @@ async function renderEnvironmentPlots(element, query) {
             tickangle: -45,
             tickfont: {
                 size: 10
-            }
+            },
+            fixedrange: true
         },
         yaxis: {
             title: {
                 text: "Records",
                 standoff: 10
-            }
+            },
+            fixedrange: true
         },
         margin: {
             l: 50,
