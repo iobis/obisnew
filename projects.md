@@ -1,13 +1,17 @@
 ---
 layout: page
-title: Products
+title: Projects
 permalink: /projects/
 ---
 
 <div class="section-light">
+  <div class="container">
 
-<h1>Projects</h1>
+  <h1>Projects</h1>
 
-{% include project_cards.html %}
+    <div class="mt-4">
+        {% include project_cards.html %}
+    </div>
 
+  </div>
 </div>

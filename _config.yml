@@ -28,8 +28,6 @@ exclude:
 collections:
   data_products:
     output: true
-  projects:
-    output: false
   usecases:
     output: true
 
@@ -50,6 +48,8 @@ menu:
     subitems:
     - title: "Core activities"
       url: "/whatwedo/core-activities"
+    - title: "Projects"
+      url: "/projects"
     - title: "Impact"
       url: "/whatwedo/impact"
     - title: "Objectives"

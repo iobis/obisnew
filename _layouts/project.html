@@ -1,0 +1,32 @@
+---
+layout: page
+---
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ page.title }}</h1>
+            {% if page.description %}
+            <p class="lead">{{ page.description }}</p>
+            {% endif %}
+            
+            {% if page.website %}
+            <p>
+                <a href="{{ page.website }}" target="_blank">
+                    Visit the {{ page.title }} website
+                </a>
+            </p>
+            {% endif %}
+
+            {{ content }}
+
+            {% assign filtered_posts = site.posts | where_exp: "post", "post.tags contains page.title" %}
+            {% if filtered_posts.size > 0 %}
+            <div class="section-light mt-5">
+                <h2>Posts about {{ page.title }}</h2>
+                {% include post_cards.html filtered_posts=filtered_posts %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div> 
