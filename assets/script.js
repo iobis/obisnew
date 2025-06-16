@@ -189,14 +189,16 @@ async function renderTimeplot(element, query) {
         xaxis: {
             title: 'Year',
             type: 'linear',
-            tickformat: 'd'
+            tickformat: 'd',
+            fixedrange: true
         },
         yaxis: {
             automargin: true,
             title: {
                 text: 'Records',
                 standoff: 10
-            }
+            },
+            fixedrange: true
         },
         margin: {
             l: 50,
