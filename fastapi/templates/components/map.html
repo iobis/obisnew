@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
         style: "mapbox://styles/iodepo/cmbnfejkp00mo01qx84wt8pao",
         projection: "mercator",
         attributionControl: false,
-        scrollZoom: false
+        scrollZoom: false,
+        dragPan: false
     });
 
     map.on("load", function() {
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         map.once("click", function() {
             map.scrollZoom.enable();
+            map.dragPan.enable();
         });
 
     });

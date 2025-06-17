@@ -59,10 +59,12 @@
     zoom: 4,
     projection: 'mercator',
     attributionControl: false,
-    scrollZoom: false
+    scrollZoom: false,
+    dragPan: false
   });
   map.once("click", function() {
       map.scrollZoom.enable();
+      map.dragPan.enable();
   });
   map.on("load", function() {
 
