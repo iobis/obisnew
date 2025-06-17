@@ -1,20 +1,106 @@
-<html>
-  {% include head.html %}
+{% include head.html %}
+<script src='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet' />
+<style>
+  #headermap {
+    height: 300px;
+    width: 100%;
+    position: relative;
+    background-color: #ffffff;
+  }
+  .mapboxgl-ctrl-logo, .mapboxgl-ctrl-attrib {
+    display: none !important;
+  }
+  .map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .map-overlay-text {
+    color: #000000;
+    font-size: 2rem;
+    text-align: center;
+  }
+  .message {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 0px 30px 0px 30px;
+  }
+  @media (min-width: 768px) {
+    .map-overlay-text {
+      font-size: 3rem;
+    }
+  }
+</style>
 
-  <body>
-    {% include header.html %}
+{% include header.html %}
 
-    <div id="map" style="background-image: url('/images/hero2.png'); background-size: cover; background-position: center; height: 300px; position: relative;">
-      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.3);"></div>
-      <div class="container h-100 d-flex align-items-center justify-content-center" style="position: relative; z-index: 1;">
-        <div class="text-center display-3" style="color: #2c3e50; text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;">
-          Marine biodiversity data at your fingertips
-        </div>
-      </div>
+<div style="position: relative;">
+  <div id="headermap"></div>
+  <div class="map-overlay">
+    <div class="map-overlay-text">
+      <span class="message">Marine biodiversity data</span><br/><span class="message" style="margin-left: 0px;">at your fingertips</span>
     </div>
+  </div>
+</div>
 
-    {{ content }}
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiaW9kZXBvIiwiYSI6ImNrd2txMXRyaTFpNjkybm1sZWxwemtrbWsifQ.KtiKSQsLSwvnDtfg9T9qdA';
+  const map = new mapboxgl.Map({
+    container: 'headermap',
+    style: 'mapbox://styles/iodepo/cmc12im9k01gq01qw2jw8317y',
+    center: [-50, 50],
+    zoom: 4,
+    projection: 'mercator',
+    attributionControl: false,
+    scrollZoom: false
+  });
+  map.once("click", function() {
+      map.scrollZoom.enable();
+  });
+  map.on("load", function() {
 
-    {% include footer.html %}
-  </body>
+    map.addSource("occurrence", {
+        type: "vector",
+        tiles: [
+            "https://api.obis.org/occurrence/tile/{x}/{y}/{z}.mvt?scientificname=Gadus"
+        ],
+        scheme: "xyz"
+    });
+
+    map.addLayer({
+        id: "obis-occurrence-layer",
+        type: "fill",
+        source: "occurrence",
+        "source-layer": "grid",
+        paint: {
+            "fill-color": [
+                "interpolate",
+                ["linear"],
+                ["get", "doc_count"],
+                0, "#2c7bb6",
+                10, "#abd9e9",
+                100, "#ffffbf",
+                1000, "#fdae61",
+                10000, "#d7191c"
+            ],
+            "fill-opacity": 0.3
+        }
+      });
+    });
+
+</script>
+
+{{ content }}
+
+{% include footer.html %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
