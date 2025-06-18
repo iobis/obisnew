@@ -710,4 +710,3 @@ async function renderEvents(element) {
 
     container.innerHTML = html;
 }
-

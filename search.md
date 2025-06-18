@@ -23,6 +23,15 @@ title: Search
             <button type="submit" class="btn">Search</button>
         </div>
     </form>
+    <div id="dataset-search-help" class="mt-3">
+        Dataset search syntax:
+        <code>+</code> signifies AND operation,
+        <code>|</code> signifies OR operation,
+        <code>-</code> negates a single token,
+        <code>"</code> wraps a number of tokens to signify a phrase for searching,
+        <code>*</code> at the end of a term signifies a prefix query,
+        <code>(</code> and <code>)</code> signify precedence.
+    </div>
     <div id="results" class="mt-5"></div>
 </div>
 
@@ -87,4 +96,21 @@ async function performSearch(skip = 0) {
         console.error(error);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var entitySelect = document.getElementById('entity');
+    var helpBox = document.getElementById('dataset-search-help');
+    if (entitySelect && helpBox) {
+        function updateHelpBox() {
+            if (entitySelect.value === 'dataset') {
+                helpBox.style.display = '';
+            } else {
+                helpBox.style.display = 'none';
+            }
+        }
+        entitySelect.addEventListener('change', updateHelpBox);
+        updateHelpBox(); // Initial call
+    }
+});
+
 </script>

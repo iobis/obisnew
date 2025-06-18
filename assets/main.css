@@ -5,6 +5,11 @@
     --dna: #DA6C6C;
 }
 
+code {
+    color: var(--highlight);
+    font-weight: bold;
+}
+
 a, .nav-link, .nav-link:hover {
     color: #000000;
 }
