@@ -158,6 +158,17 @@ function renderCountryItem(item) {
     `;
 }
 
+function renderPublisherItem(item) {
+    return `
+        <div class="area-result">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <a href="/publisher/${item.id}"><strong>${item.name}</strong></a>
+                <span class="badge bg-light text-dark">${item.records.toLocaleString("en-US")} records</span>
+            </div>
+        </div>
+    `;
+}
+
 async function renderTimeplot(element, query) {
     const params = new URLSearchParams(query);
     const url = `https://api.obis.org/statistics/years?${params.toString()}`;
@@ -371,6 +382,54 @@ function renderDatasetTable(containerId, filter, pageSize = 10) {
     }
 
     fetchDatasets();
+        
+}
+
+function renderPublisherTable(containerId, filter, pageSize = 10) {
+    let currentSkip = 0;
+
+    async function fetchPublishers(skip = 0) {
+        currentSkip = skip;
+        
+        const params = new URLSearchParams({
+            size: pageSize,
+            skip: skip,
+            ...filter
+        });
+        
+        const url = `https://api.obis.org/institute?${params}`;
+        const resultsDiv = document.getElementById(containerId);
+
+        // fix height
+        if (Array.from(resultsDiv.children).some(child => child.tagName === 'DIV')) {
+            const height = resultsDiv.offsetHeight;
+            resultsDiv.style.height = height + "px";
+        }
+
+        resultsDiv.innerHTML = "<p>Searching...</p>";
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data && data.results && data.results.length > 0) {
+                renderTable(containerId, data.results, data.total, skip, pageSize, renderPublisherItem, fetchPublishers);
+            } else {
+                resultsDiv.innerHTML = "<p>No results found.</p>";
+            }
+        } catch (error) {
+            resultsDiv.innerHTML = "<p>Error fetching results.</p>";
+            console.error(error);
+        }
+
+        // reset height
+        requestAnimationFrame(() => {
+            resultsDiv.style.height = "";
+        });
+
+    }
+
+    fetchPublishers();
         
 }
 
