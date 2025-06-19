@@ -16,7 +16,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% for subitem in item.subitems %}
-                <li><a class="dropdown-item" href="{{ subitem.url }}">{{ subitem.title }}</a></li>
+                <li><a class="dropdown-item" href="{{ subitem.url }}"{% if subitem.target %} target="{{ subitem.target }}"{% endif %}>{{ subitem.title }}</a></li>
               {% endfor %}
             </ul>
             {% else %}
