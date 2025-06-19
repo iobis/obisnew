@@ -26,6 +26,8 @@ exclude:
   - docker-compose.yml
 
 collections:
+  partnerships:
+    output: true
   data_products:
     output: true
   usecases:
@@ -50,6 +52,8 @@ menu:
       url: "/whatwedo/core-activities"
     - title: "Projects"
       url: "/projects"
+    - title: "Partnerships"
+      url: "/partnerships"
     - title: "Impact"
       url: "/whatwedo/impact"
     - title: "Objectives"

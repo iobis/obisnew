@@ -1,0 +1,17 @@
+---
+layout: page
+title: Partnerships
+permalink: /partnerships/
+---
+
+<h1>Partnerships</h1>
+
+{% for partnership in site.partnerships %}
+<section class="section-superdense">
+  <h3>{{ partnership.title }}</h3>
+  {% if partnership.website %}
+    <p><a href="{{ partnership.website }}" target="_blank">{{ partnership.website }}</a></p>
+  {% endif %}
+  {{ partnership.content | markdownify }}
+</section>
+{% endfor %}
