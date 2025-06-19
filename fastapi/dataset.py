@@ -4,11 +4,19 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 import requests
 import urllib
+from datetime import datetime
 
 router = APIRouter()
 
 templates = Environment(loader=FileSystemLoader("templates"))
 shell_templates = Jinja2Templates(directory="static")
+
+def datetimeformat(value, format="%B %d, %Y at %H:%M"):
+    if isinstance(value, str):
+        value = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    return value.strftime(format)
+
+templates.filters["datetimeformat"] = datetimeformat
 
 
 def get_quality_statistics(filters: dict):

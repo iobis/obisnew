@@ -55,6 +55,10 @@
           {% if dataset.citation %}
           <p>Citation: <i>{{ dataset.citation }}</i></p>
           {% endif %}
+
+          {% if dataset.published %}
+          <p>Published: {{ dataset.published | datetimeformat }}</p>
+          {% endif %}
       
           <p>URL: <a href="{{ dataset.url }}" target="_blank">{{ dataset.url }}</a></p>
       
