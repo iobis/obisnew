@@ -1,0 +1,14 @@
+---
+layout: page
+title: External sources
+permalink: /sources/
+---
+
+<h1>External sources</h1>
+
+{% for source in site.sources %}
+<section class="section-superdense">
+  <h3>{{ source.title }}</h3>
+  {{ source.content | markdownify }}
+</section>
+{% endfor %}
