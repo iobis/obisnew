@@ -10,9 +10,10 @@ title: Search
             <label for="entity" class="form-label">Search for</label>
             <select id="entity" class="form-select">
                 <option value="dataset" selected>Dataset</option>
-                <option value="taxon">Taxon</option>
+                <option value="taxon">Scientific name</option>
+                <option value="common">Common name</option>
                 <option value="area">Area</option>
-                <option value="country">Country</option>
+                <option value="country">Publisher country</option>
             </select>
         </div>
         <div class="col-md-4">
@@ -47,6 +48,10 @@ const entityConfig = {
     },
     taxon: {
         endpoint: 'taxon/search',
+        renderItem: renderTaxonItem
+    },
+    common: {
+        endpoint: 'taxon/search/common',
         renderItem: renderTaxonItem
     },
     area: {

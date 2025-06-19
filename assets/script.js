@@ -121,6 +121,7 @@ function renderTaxonItem(item) {
     return `
         <div class="taxon-result">
             <div class="d-flex align-items-center gap-2">
+                ${item.commonName ? `<span>${item.commonName}</span>` : ``}
                 <a href="/taxon/${item.taxonID}"><strong>${item.scientificName}</strong></a>
                 ${item.scientificNameAuthorship ? `<span class="text-muted">${item.scientificNameAuthorship}</span>` : ''}
                 ${item.taxonomicStatus !== 'accepted' ? `<span class="badge bg-warning">${item.taxonomicStatus}</span>` : ''}
