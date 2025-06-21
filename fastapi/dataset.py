@@ -3,11 +3,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 import requests
-import urllib
 from datetime import datetime
+from lib import get_statistics, get_quality_statistics
+
 
 router = APIRouter()
-
 templates = Environment(loader=FileSystemLoader("templates"))
 shell_templates = Jinja2Templates(directory="static")
 
@@ -19,16 +19,19 @@ def datetimeformat(value, format="%B %d, %Y at %H:%M"):
 templates.filters["datetimeformat"] = datetimeformat
 
 
-def get_quality_statistics(filters: dict):
-    params = urllib.parse.urlencode(filters)
-    api_url = f"https://api.obis.org/statistics/qc?{params}"
+def get_metadata(dataset_id: str):
+    api_url = f"https://api.obis.org/dataset/{dataset_id}"
     try:
         response = requests.get(api_url)
         response.raise_for_status()
-        result = response.json()
-        return result
+        response_json = response.json()
+        dataset = response_json["results"][0]
+        if "contacts" in dataset:
+            dataset["clean_contacts"] = process_contacts(dataset["contacts"])
     except Exception as e:
         print(e)
+        raise HTTPException(status_code=404, detail="Dataset not found")
+    return dataset
 
 
 def process_contacts(contacts):
@@ -58,19 +61,13 @@ async def dataset_page(request: Request, dataset_id: str):
 
     # dataset metadata
 
-    api_url = f"https://api.obis.org/dataset/{dataset_id}"
-    try:
-        response = requests.get(api_url)
-        response.raise_for_status()
-        response_json = response.json()
-        dataset = response_json["results"][0]
-        
-        if "contacts" in dataset:
-            dataset["clean_contacts"] = process_contacts(dataset["contacts"])
-            
-    except Exception as e:
-        print(e)
-        raise HTTPException(status_code=404, detail="Dataset not found")
+    dataset = get_metadata(dataset_id)
+
+    # statistics
+
+    statistics = get_statistics({
+        "datasetid": dataset_id
+    })
 
     # quality statistics
 
@@ -84,6 +81,7 @@ async def dataset_page(request: Request, dataset_id: str):
 
     dataset_block = templates.get_template("dataset.html").render(
         dataset=dataset,
+        statistics=statistics,
         quality_statistics=quality_statistics
     )
 

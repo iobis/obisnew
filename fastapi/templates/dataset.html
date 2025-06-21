@@ -90,6 +90,18 @@
               <div>sequences</div>
             </div>
             {% endif %}
+            {% if statistics.taxa %}
+            <div class="text-center text-md-end">
+              <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.taxa) }}</div>
+              <div>taxa</div>
+            </div>
+            {% endif %}
+            {% if statistics.species %}
+            <div class="text-center text-md-end">
+              <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.species) }}</div>
+              <div>species</div>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>
