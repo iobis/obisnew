@@ -3,9 +3,38 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
 <script src="/assets/script.js"></script>
 
-<section class="section-dense">
+<section class="section-superdense">
     <div class="container">
         <h1>{{ country.country }}</h1>
+    </div>
+</section>
+
+<section class="section-superdense">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-6 col-md-3 mb-4">
+                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.datasets) }}</div>
+                <div>datasets</div>
+            </div>
+
+            <div class="col-6 col-md-3 mb-4">
+                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.records) }}</div>
+                <div>occurrence records</div>
+            </div>
+
+            <div class="col-6 col-md-3 mb-4">
+                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.taxa) }}</div>
+                <div>taxa</div>
+            </div>
+
+            <div class="col-6 col-md-3 mb-4">
+                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.species) }}</div>
+                <div>species</div>
+            </div>
+
+        </div>
     </div>
 </section>
 

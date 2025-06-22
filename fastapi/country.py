@@ -3,6 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 import requests
+from lib import get_statistics
+
 
 router = APIRouter()
 
@@ -12,17 +14,25 @@ shell_templates = Jinja2Templates(directory="static")
 @router.get("/{country_id}", response_class=HTMLResponse)
 async def country(request: Request, country_id: int):
     try:
+
+        # country metadata
+
         response = requests.get(f"https://api.obis.org/country/{country_id}")
         response.raise_for_status()
         data = response.json()
-        
         if not data.get("results"):
             raise HTTPException(status_code=404, detail="Country not found")
-            
         country = data["results"][0]
-        
+
+        # statistics
+
+        statistics = get_statistics({
+            "countryid": country_id
+        })
+
         country_block = templates.get_template("country.html").render(
-            country=country
+            country=country,
+            statistics=statistics
         )
 
         return shell_templates.TemplateResponse(
@@ -35,4 +45,4 @@ async def country(request: Request, country_id: int):
         )
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=404, detail="Country not found") 
+        raise HTTPException(status_code=404, detail="Error loading publishing country information") 
