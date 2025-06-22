@@ -9,6 +9,17 @@
     </div>
 </section>
 
+<section class="section-dense">
+    <div class="row align-items-center">
+      <div class="col-12 col-md-6">
+          <div id="timeplot"></div>
+      </div>
+      <div class="col-12 col-md-6">
+          <div id="sunburst" style="height: 600px;"></div>
+      </div>
+    </div>
+  </section>
+  
 <section class="section-dense section-dark">
     <div class="container">
         <h2>Datasets</h2>
@@ -23,10 +34,6 @@
     </div>
 </section>
 
-<section class="section-dense">
-    <div id="sunburst" style="height: 600px;"></div>
-</section>
-
 <script>
 fetchTaxonomy({ countryid: "{{ country.id }}" }).then(convertToSunburst).then((data) => {
     var layout = {
@@ -39,4 +46,5 @@ fetchTaxonomy({ countryid: "{{ country.id }}" }).then(convertToSunburst).then((d
   
 renderDatasetTable("datasets", { countryid: "{{ country.id }}" });
 renderPublisherTable("publishers", { countryid: "{{ country.id }}" });
+renderTimeplot("timeplot", { countryid: "{{ country.id }}" })
 </script>
