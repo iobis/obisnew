@@ -4,6 +4,8 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 import requests
 import os
+from lib import get_statistics
+
 
 router = APIRouter()
 
@@ -13,17 +15,25 @@ shell_templates = Jinja2Templates(directory="static")
 @router.get("/{area_id}", response_class=HTMLResponse)
 async def area(request: Request, area_id: int):
     try:
+
+        # area metadata
+
         response = requests.get(f"https://api.obis.org/area/{area_id}")
         response.raise_for_status()
         data = response.json()
-        
         if not data.get("results"):
             raise HTTPException(status_code=404, detail="Area not found")
-            
         area = data["results"][0]
-        
+
+        # statistics
+
+        statistics = get_statistics({
+            "areaid": area_id
+        })
+
         area_block = templates.get_template("area.html").render(
-            area=area
+            area=area,
+            statistics=statistics
         )
 
         return shell_templates.TemplateResponse(
