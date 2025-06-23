@@ -3,74 +3,63 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
 <script src="/assets/script.js"></script>
 
-<section class="section-dense">
+<section class="section-dense pb-0">
     <div class="container">
+        <p>Area</p>
         <h1>{{ area.name }}</h1>
     </div>
 </section>
 
-<section class="section-superdense">
-    <div class="container">
+<section class="section-dense">
+  <div class="container">
+    <div class="row align-items-center">
 
+      <div class="col-12 col-md-6">
         <div class="row">
-
-            <div class="col-6 col-md-3 mb-4">
-                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.datasets) }}</div>
-                <div>datasets</div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-6 col-md-6 mb-4">
+                  <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.datasets) }}</div>
+                  <div>datasets</div>
+              </div>
+              <div class="col-6 col-md-6 mb-4">
+                  <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.records) }}</div>
+                  <div>occurrence records</div>
+              </div>
+              <div class="col-6 col-md-6 mb-4">
+                  <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.taxa) }}</div>
+                  <div>taxa</div>
+              </div>
+              <div class="col-6 col-md-6 mb-4">
+                  <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.species) }}</div>
+                  <div>species</div>
+              </div>
             </div>
-
-            <div class="col-6 col-md-3 mb-4">
-                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.records) }}</div>
-                <div>occurrence records</div>
+            <div class="col-12">
+              <div id="timeplot"></div>
             </div>
-
-            <div class="col-6 col-md-3 mb-4">
-                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.taxa) }}</div>
-                <div>taxa</div>
-            </div>
-
-            <div class="col-6 col-md-3 mb-4">
-                <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.species) }}</div>
-                <div>species</div>
-            </div>
-
+          </div>
         </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div id="sunburst" style="height: 600px;"></div>
+      </div>
+
     </div>
+  </div>
 </section>
 
 <section class="section-dense section-dark">
-    <div class="container">
-
-        <h2>Datasets</h2>
-
-        <div id="datasets"></div>
-    </div>
-
+  <div class="container">
+    <h2>Datasets</h2>
+    <div id="datasets"></div>
+  </div>
 </section>
 
-<section class="section-dense">
-    <div class="row align-items-center">
-      <div class="col-12 col-md-6">
-          <div id="timeplot"></div>
-      </div>
-      <div class="col-12 col-md-6">
-          <div id="sunburst" style="height: 600px;"></div>
-      </div>
-    </div>
-  </section>
-
 <script>
-fetchTaxonomy({ areaid: "{{ area.id }}" }).then(convertToSunburst).then((data) => {
-    var layout = {
-        margin: {l: 0, r: 0, b: 30, t: 30},
-        sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
-        // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
-    };
-    Plotly.newPlot("sunburst", data, layout);
-});
-
+renderSunburst("sunburst", { areaid: "{{ area.id }}" });
 renderDatasetTable("datasets", { areaid: "{{ area.id }}" });
 renderPublisherTable("publishers", { areaid: "{{ area.id }}" });
 renderTimeplot("timeplot", { areaid: "{{ area.id }}" })
-
 </script>

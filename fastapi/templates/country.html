@@ -3,60 +3,54 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
 <script src="/assets/script.js"></script>
 
-<section class="section-dense">
+<section class="section-dense pb-0">
     <div class="container">
+        <p>Publishing country</p>
         <h1>{{ country.country }}</h1>
     </div>
 </section>
 
-<section class="section-superdense">
-    <div class="container">
+<section class="section-dense">
+<div class="container">
+    <div class="row align-items-center">
 
+    <div class="col-12 col-md-6">
         <div class="row">
-
-            <div class="col-6 col-md-3 mb-4">
+        <div class="col-12">
+            <div class="row">
+            <div class="col-6 col-md-6 mb-4">
                 <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.datasets) }}</div>
                 <div>datasets</div>
             </div>
-
-            <div class="col-6 col-md-3 mb-4">
+            <div class="col-6 col-md-6 mb-4">
                 <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.records) }}</div>
                 <div>occurrence records</div>
             </div>
-
-            <div class="col-6 col-md-3 mb-4">
+            <div class="col-6 col-md-6 mb-4">
                 <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.taxa) }}</div>
                 <div>taxa</div>
             </div>
-
-            <div class="col-6 col-md-3 mb-4">
+            <div class="col-6 col-md-6 mb-4">
                 <div class="display-6 fw-bold">{{ "{:0,.0f}".format(statistics.species) }}</div>
                 <div>species</div>
             </div>
-
+            </div>
+            <div class="col-12">
+            <div id="timeplot"></div>
+            </div>
+        </div>
         </div>
     </div>
-</section>
 
-<section class="section-dense">
-    <div class="row align-items-center">
-      <div class="col-12 col-md-6">
-          <div id="timeplot"></div>
-      </div>
-      <div class="col-12 col-md-6">
-          <div id="sunburst" style="height: 600px;"></div>
-      </div>
+    <div class="col-12 col-md-6">
+        <div id="sunburst" style="height: 600px;"></div>
     </div>
-  </section>
+
+    </div>
+</div>
+</section>
   
 <section class="section-dense section-dark">
-    <div class="container">
-        <h2>Datasets</h2>
-        <div id="datasets"></div>
-    </div>
-</section>
-
-<section class="section-dense">
     <div class="container">
         <h2>Publishers</h2>
         <div id="publishers"></div>

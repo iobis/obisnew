@@ -770,3 +770,14 @@ async function renderEvents(element) {
 
     container.innerHTML = html;
 }
+
+function renderSunburst(element, filter) {
+    fetchTaxonomy(filter).then(convertToSunburst).then((data) => {
+        var layout = {
+            margin: {l: 0, r: 0, b: 30, t: 30},
+            sunburstcolorway: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+            // sunburstcolorway: ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
+        };
+        Plotly.newPlot(element, data, layout);
+    });
+}
