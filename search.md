@@ -102,7 +102,40 @@ async function performSearch(skip = 0) {
     }
 }
 
+function getURLParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+function updateURL() {
+    const entity = document.getElementById("entity").value;
+    const query = document.getElementById("query").value.trim();
+    const params = new URLSearchParams();
+    if (entity && entity !== "dataset") {
+        params.set("entity", entity);
+    }
+    if (query) {
+        params.set("q", query);
+    }
+    const newURL = params.toString() ? `/search?${params.toString()}` : "/search";
+    window.history.replaceState({}, "", newURL);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    const entityParam = getURLParameter('entity');
+    const queryParam = getURLParameter('q');
+    if (entityParam) {
+        const entitySelect = document.getElementById('entity');
+        entitySelect.value = entityParam;
+    }
+    if (queryParam) {
+        const queryInput = document.getElementById('query');
+        queryInput.value = queryParam;
+    }
+    if (queryParam) {
+        performSearch();
+    }
+
     var entitySelect = document.getElementById('entity');
     var helpBox = document.getElementById('dataset-search-help');
     if (entitySelect && helpBox) {
@@ -116,6 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
         entitySelect.addEventListener('change', updateHelpBox);
         updateHelpBox(); // Initial call
     }
+
+    document.getElementById("entity").addEventListener("change", updateURL);
+    document.getElementById("query").addEventListener("input", updateURL);
 });
 
 </script>
