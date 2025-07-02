@@ -68,14 +68,9 @@ async def auth(request: Request, provider: str):
             user["orcid"] = userinfo.get("sub")
             user["name"] = userinfo.get("name")
             user["email"] = userinfo.get("email")
-        else:
-            claims = token.get("id_token_claims")
-            if claims:
-                user["orcid"] = claims.get("sub")
-                user["name"] = claims.get("name")
-                user["email"] = claims.get("email")
     else:
         raise HTTPException(status_code=400, detail="Unknown provider")
+    print(user)
     request.session["user"] = user
     return RedirectResponse(url="/doi")
 
