@@ -17,6 +17,11 @@
     <span class="badge bg-warning">{{ taxon.taxonomicStatus }}</span>
     {% endif %}
     <span class="badge bg-light text-dark">{{ taxon.taxonRank }}</span>
+    {% if taxon.category %}
+        {% with category=taxon.category %}
+        {% include "components/redlist_badge.html" %}
+        {% endwith %}
+    {% endif %}
 </div>
 
 <p>

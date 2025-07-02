@@ -126,6 +126,7 @@ function renderTaxonItem(item) {
                 ${item.scientificNameAuthorship ? `<span class="text-muted">${item.scientificNameAuthorship}</span>` : ''}
                 ${item.taxonomicStatus !== 'accepted' ? `<span class="badge bg-warning">${item.taxonomicStatus}</span>` : ''}
                 ${item.taxonRank ? `<span class="badge bg-light text-dark">${item.taxonRank}</span>` : ''}
+                ${item.category ? renderRedListBadge(item.category) : ''}
             </div>
             <p>
                 ${lineage.length > 0 ? lineage.join(' > ') : ''}
@@ -780,4 +781,25 @@ function renderSunburst(element, filter) {
         };
         Plotly.newPlot(element, data, layout);
     });
+}
+
+function renderRedListBadge(category) {
+    if (category === "EX" || category == "EW" || category == "CR" || category == "EN" || category == "VU") {
+        const colors = {
+            "EX": "#000000",
+            "EW": "#880000",
+            "CR": "#d1001c",
+            "EN": "#e67e22",
+            "VU": "#f7b731",
+            "NT": "#3fa535",
+            "LC": "#1e90a2",
+            "DD": "#aaaaaa",
+            "NE": "#cccccc"
+        };
+        const color = colors[category] || "#aaaaaa";
+        let textColor = "#fff";
+        if (category === "VU" || category === "NE") textColor = "#222";
+        return `<span class="badge" style="background-color: ${color}; color: ${textColor}; font-weight: 600;" title="IUCN Red List: ${category}">${category}</span>`;
+    }
+    return "";
 }

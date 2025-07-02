@@ -1,0 +1,16 @@
+{% if category %}
+    {% set color = {
+        'EX': '#000000',
+        'EW': '#880000',
+        'CR': '#d1001c',
+        'EN': '#e67e22',
+        'VU': '#f7b731',
+        'NT': '#3fa535',
+        'LC': '#1e90a2',
+        'DD': '#aaaaaa',
+        'NE': '#cccccc'
+    }.get(category, '#aaaaaa') %}
+    {% set text_color = '#fff' %}
+    {% if category in ['VU', 'NE'] %}{% set text_color = '#222' %}{% endif %}
+    <span class="badge" style="background-color: {{ color }}; color: {{ text_color }}; font-weight: 600;" title="IUCN Red List: {{ category }}">{{ category }}</span>
+{% endif %} 
