@@ -1,7 +1,8 @@
 FROM python:3.11-slim
 
 WORKDIR /app
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 COPY fastapi/ /app
-RUN pip install fastapi uvicorn jinja2 requests
+RUN pip install fastapi uvicorn jinja2 requests python-frontmatter authlib python-dotenv starlette itsdangerous httpx python-multipart git+https://github.com/iobis/obis-dois.git@main
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]

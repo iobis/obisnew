@@ -102,6 +102,7 @@ section {
     padding: 0.375rem 0.75rem;
     min-width: 80px;
     text-align: center;
+    border-color: var(--highlight);
 }
 
 .btn-light, .btn-light:hover, .btn-light:focus, .btn-light:focus-visible, .btn-light:active, .btn-light:target, .btn-light:disabled {
