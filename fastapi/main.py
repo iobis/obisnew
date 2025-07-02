@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Request, Depends, HTTPException
-from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
-from authlib.integrations.starlette_client import OAuth
+from auth import router as auth_router
 import os
 from node import router as node_router
 from dataset import router as dataset_router
@@ -15,92 +14,11 @@ from export import router as export_router
 
 
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key=os.getenv('SESSION_SECRET_KEY', 'your-random-secret-key'))
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SESSION_SECRET_KEY", "your-random-secret-key"))
 
 templates = Jinja2Templates(directory="fastapi/templates")
 
-oauth = OAuth()
-oauth.register(
-    name="google",
-    client_id=os.getenv("GOOGLE_CLIENT_ID"),
-    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
-    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
-    client_kwargs={"scope": "openid email profile"}
-)
-oauth.register(
-    name="github",
-    client_id=os.getenv("GITHUB_CLIENT_ID"),
-    client_secret=os.getenv("GITHUB_CLIENT_SECRET"),
-    access_token_url="https://github.com/login/oauth/access_token",
-    access_token_params=None,
-    authorize_url="https://github.com/login/oauth/authorize",
-    authorize_params=None,
-    api_base_url="https://api.github.com/",
-    client_kwargs={"scope": "user:email"}
-)
-oauth.register(
-    name="linkedin",
-    client_id=os.getenv("LINKEDIN_CLIENT_ID"),
-    client_secret=os.getenv("LINKEDIN_CLIENT_SECRET"),
-    access_token_url="https://www.linkedin.com/oauth/v2/accessToken",
-    authorize_url="https://www.linkedin.com/oauth/v2/authorization",
-    api_base_url="https://api.linkedin.com/v2/",
-    client_kwargs={"scope": "r_liteprofile r_emailaddress"}
-)
-oauth.register(
-    name="orcid",
-    client_id=os.getenv("ORCID_CLIENT_ID"),
-    client_secret=os.getenv("ORCID_CLIENT_SECRET"),
-    access_token_url="https://orcid.org/oauth/token",
-    authorize_url="https://orcid.org/oauth/authorize",
-    api_base_url="https://pub.orcid.org/v3.0/",
-    client_kwargs={"scope": "openid"}
-)
-
-@app.get("/login/{provider}")
-async def login(request: Request, provider: str):
-    host = os.getenv("PUBLIC_HOST")
-    redirect_uri = f"{host}/auth/{provider}"
-    return await oauth.create_client(provider).authorize_redirect(request, redirect_uri)
-
-@app.get("/auth/{provider}")
-async def auth(request: Request, provider: str):
-    token = await oauth.create_client(provider).authorize_access_token(request)
-    if provider == "google":
-        user = token.get("userinfo")
-    elif provider == "github":
-        resp = await oauth.github.get("user", token=token)
-        user = resp.json()
-    elif provider == "linkedin":
-        resp = await oauth.linkedin.get("me", token=token)
-        user = resp.json()
-        email_resp = await oauth.linkedin.get("emailAddress?q=members&projection=(elements*(handle~))", token=token)
-        email = email_resp.json()["elements"][0]["handle~"]["emailAddress"]
-        user["email"] = email
-    elif provider == "orcid":
-        user = {}
-        id_token = token.get("id_token")
-        if id_token:
-            from authlib.jose import jwt
-            claims = jwt.decode(id_token, key=None, claims_options={"iss": {"essential": False}})
-            user["orcid"] = claims.get("sub")
-            user["name"] = claims.get("name")
-            user["email"] = claims.get("email")
-        else:
-            resp = await oauth.orcid.get("userinfo", token=token)
-            userinfo = resp.json()
-            user["orcid"] = userinfo.get("sub")
-            user["name"] = userinfo.get("name")
-            user["email"] = userinfo.get("email")
-    else:
-        raise HTTPException(status_code=400, detail="Unknown provider")
-    request.session["user"] = user
-    return RedirectResponse(url="/doi")
-
-@app.get("/logout/")
-async def logout(request: Request):
-    request.session.pop("user", None)
-    return RedirectResponse(url="/")
+app.include_router(auth_router)
 
 app.include_router(node_router, prefix="/node")
 app.include_router(dataset_router, prefix="/dataset")
