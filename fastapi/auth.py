@@ -70,7 +70,6 @@ async def auth(request: Request, provider: str):
             user["email"] = userinfo.get("email")
     else:
         raise HTTPException(status_code=400, detail="Unknown provider")
-    print(user)
     request.session["user"] = user
     return RedirectResponse(url="/doi")
 
