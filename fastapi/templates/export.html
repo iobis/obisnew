@@ -1,0 +1,23 @@
+<script src="/assets/script.js"></script>
+
+<section class="section-dense">
+    <div class="container">
+
+        <h1>{{ export.id }}</h1>
+
+        <p>{{ export.titles[0].title }}</p>
+
+        {% if export.relatedIdentifiers %}
+        <h3>Related Identifiers</h3>
+
+        <p>This export contains records from the following resources:</p>
+
+        <ul>
+            {% for rel in export.relatedIdentifiers %}
+            <li><a href="{{ rel.relatedIdentifier }}" target="_blank">{{ rel.relatedIdentifier }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+</section>
