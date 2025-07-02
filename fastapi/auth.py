@@ -37,9 +37,7 @@ oauth.register(
     name="orcid",
     client_id=os.getenv("ORCID_CLIENT_ID"),
     client_secret=os.getenv("ORCID_CLIENT_SECRET"),
-    access_token_url="https://orcid.org/oauth/token",
-    authorize_url="https://orcid.org/oauth/authorize",
-    api_base_url="https://pub.orcid.org/v3.0/",
+    server_metadata_url="https://orcid.org/.well-known/openid-configuration",
     client_kwargs={"scope": "openid"}
 )
 
