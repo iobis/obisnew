@@ -45,7 +45,12 @@ oauth.register(
 async def login(request: Request, provider: str):
     host = os.getenv("PUBLIC_HOST")
     redirect_uri = f"{host}/auth/{provider}"
-    return await oauth.create_client(provider).authorize_redirect(request, redirect_uri)
+    params = {}
+    if provider == "orcid":
+        params["prompt"] = "login"
+    return await oauth.create_client(provider).authorize_redirect(
+        request, redirect_uri, **params
+    )
 
 @router.get("/auth/{provider}")
 async def auth(request: Request, provider: str):
