@@ -64,14 +64,12 @@ async def auth(request: Request, provider: str):
     elif provider == "orcid":
         user = {}
         userinfo = token.get("userinfo")
-        print("USER INFO", userinfo)
         if userinfo:
             user["orcid"] = userinfo.get("sub")
             user["name"] = userinfo.get("name")
             user["email"] = userinfo.get("email")
         else:
             claims = token.get("id_token_claims")
-            print("CLAIMS", claims)
             if claims:
                 user["orcid"] = claims.get("sub")
                 user["name"] = claims.get("name")

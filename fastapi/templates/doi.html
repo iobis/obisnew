@@ -13,7 +13,7 @@
             <a href="/login/linkedin" class="btn btn-primary">Sign in with LinkedIn</a> -->
             <a href="/login/orcid" class="btn btn-primary">Sign in with ORCID</a>
         {% else %}
-            <p>Signed in as: {{ user.get('email', user.get('login', user.get('localizedFirstName', 'User'))) }}</p>
+            <p>Signed in as: {{ user.get('email', user.get('login', user.get('localizedFirstName', user.get('orcid', 'User')))) }}</p>
             <a href="/logout" class="btn btn-secondary">Logout</a>
 
             {% if confirmation %}
