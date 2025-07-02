@@ -63,19 +63,18 @@ async def auth(request: Request, provider: str):
         user["email"] = email
     elif provider == "orcid":
         user = {}
-        id_token = token.get("id_token")
-        if id_token:
-            from authlib.jose import jwt
-            claims = jwt.decode(id_token, key=None, claims_options={"iss": {"essential": False}})
-            user["orcid"] = claims.get("sub")
-            user["name"] = claims.get("name")
-            user["email"] = claims.get("email")
-        else:
-            resp = await oauth.orcid.get("userinfo", token=token)
-            userinfo = resp.json()
+        userinfo = token.get("userinfo")
+        if userinfo:
             user["orcid"] = userinfo.get("sub")
             user["name"] = userinfo.get("name")
             user["email"] = userinfo.get("email")
+        else:
+            # fallback: try to get from id_token claims if available
+            claims = token.get("id_token_claims")
+            if claims:
+                user["orcid"] = claims.get("sub")
+                user["name"] = claims.get("name")
+                user["email"] = claims.get("email")
     else:
         raise HTTPException(status_code=400, detail="Unknown provider")
     request.session["user"] = user
