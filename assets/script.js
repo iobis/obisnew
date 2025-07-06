@@ -660,6 +660,16 @@ async function renderPublications(element, defaultYear = new Date().getFullYear(
         displayModeBar: false
     });
 
+    function fixUnclosedBoldTags(html) {
+        const openTags = (html.match(/<b>/g) || []).length;
+        const closeTags = (html.match(/<\/b>/g) || []).length;
+        let fixed = html;
+        for (let i = 0; i < openTags - closeTags; i++) {
+            fixed += '</b>';
+        }
+        return fixed;
+    }
+
     async function renderYearPublications(year) {
         const tableDiv = document.getElementById('publications-table');
         tableDiv.innerHTML = '<p>Loading publications...</p>';
@@ -684,7 +694,7 @@ async function renderPublications(element, defaultYear = new Date().getFullYear(
             data.results.forEach(pub => {
                 html += `
                     <li class="mb-3">
-                        ${pub.rr}
+                        ${fixUnclosedBoldTags(pub.rr)}
                         ${pub.pubinst ? `<a href="https://www.vliz.be/imisdocs/publications/${pub.pubinst}" class="badge badge-download ms-2">download publication</a>` : ''}
                     </li>
                 `;
