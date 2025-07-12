@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 import requests
 from datetime import datetime
-from lib import get_statistics, get_quality_statistics
+from lib import get_statistics, get_quality_statistics, render_jsonld, get_dataset_variables
 
 
 router = APIRouter()
@@ -77,12 +77,26 @@ async def dataset_page(request: Request, dataset_id: str):
         "absence": "include"
     })
 
+    # variables
+
+    variables = get_dataset_variables({
+        "datasetid": dataset_id,
+        "dropped": "include",
+        "absence": "include",
+        "event": "include"
+    })
+
+    # jsonld
+
+    jsonld = render_jsonld(dataset, statistics=statistics, variables=variables)
+
     # render
 
     dataset_block = templates.get_template("dataset.html").render(
         dataset=dataset,
         statistics=statistics,
-        quality_statistics=quality_statistics
+        quality_statistics=quality_statistics,
+        jsonld=jsonld
     )
 
     return shell_templates.TemplateResponse(
